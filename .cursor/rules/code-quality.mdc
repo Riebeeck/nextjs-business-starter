@@ -1,0 +1,158 @@
+---
+description: Code quality, linting, and formatting standards
+alwaysApply: true
+---
+
+# Code Quality Standards
+
+## ESLint Configuration
+Extend Next.js recommended config:
+```json
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "no-console": "warn",
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-function-return-type": "off"
+  }
+}
+```
+
+## Prettier Configuration
+Create `.prettierrc`:
+```json
+{
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "printWidth": 100
+}
+```
+
+## Import Organization
+Order imports logically:
+```typescript
+// 1. React and Next.js
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+// 2. External libraries
+import { format } from 'date-fns';
+
+// 3. Internal utilities and types
+import { getAllPosts } from '@/lib/content';
+import type { BlogPost } from '@/types';
+
+// 4. Components
+import Header from '@/components/Header';
+import BlogCard from '@/components/blog/BlogCard';
+
+// 5. Styles (if any)
+import styles from './page.module.css';
+```
+
+## Error Handling
+- Use try-catch for async operations
+- Provide meaningful error messages
+- Log errors appropriately
+- Handle edge cases gracefully
+
+```typescript
+async function fetchData() {
+  try {
+    const data = await getData();
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+    return null;
+  }
+}
+```
+
+## Type Safety
+- Avoid `any` type
+- Use type guards for runtime checks
+- Leverage TypeScript's inference
+- Define return types for complex functions
+
+```typescript
+// Good
+function isValidPost(post: unknown): post is BlogPost {
+  return (
+    typeof post === 'object' &&
+    post !== null &&
+    'title' in post &&
+    'date' in post
+  );
+}
+
+// Bad
+function processPost(post: any) {
+  return post.title;
+}
+```
+
+## Function Guidelines
+- Keep functions small and focused (< 50 lines)
+- One responsibility per function
+- Use descriptive names (verb + noun)
+- Avoid side effects when possible
+- Document complex logic with comments
+
+```typescript
+// Good: Clear, single purpose
+function formatPostDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+// Bad: Multiple responsibilities
+function processAndFormatAndSavePost(post: any) {
+  // Too much happening here
+}
+```
+
+## Comments
+- Use comments to explain "why", not "what"
+- Document complex algorithms
+- Add JSDoc for public APIs
+- Keep comments up to date
+
+```typescript
+/**
+ * Parses MDX files and extracts frontmatter metadata.
+ * Sorts posts by date in descending order.
+ * 
+ * @param directory - Path to content directory
+ * @returns Array of parsed posts with metadata
+ */
+export async function getPosts(directory: string): Promise<BlogPost[]> {
+  // Implementation
+}
+```
+
+## Testing (Future)
+When adding tests:
+- Write tests for utility functions
+- Test edge cases and error conditions
+- Use meaningful test descriptions
+- Keep tests simple and focused
+
+## Code Review Checklist
+Before committing:
+- [ ] No TypeScript errors
+- [ ] No ESLint warnings
+- [ ] Code is formatted (Prettier)
+- [ ] No console.logs
+- [ ] Imports are organized
+- [ ] Functions are well-named
+- [ ] Complex logic is commented
+- [ ] No unused variables or imports
+- [ ] Error handling is in place

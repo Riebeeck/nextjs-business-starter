@@ -1,0 +1,135 @@
+---
+description: Git workflow and GitHub deployment standards
+alwaysApply: false
+---
+
+# Git & GitHub Standards
+
+## Repository Information
+- **GitHub Account**: [@Riebeeck](https://github.com/Riebeeck)
+- **Repository**: To be created at `https://github.com/Riebeeck/core_web`
+- **Primary Branch**: `main`
+
+## Commit Messages
+Follow conventional commits format:
+```
+type(scope): subject
+
+body (optional)
+
+footer (optional)
+```
+
+Types:
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, no logic change)
+- `refactor`: Code refactoring
+- `perf`: Performance improvements
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+
+Examples:
+```
+feat(blog): add syntax highlighting to code blocks
+fix(header): resolve mobile menu toggle issue
+docs: update README with deployment instructions
+style(components): format with prettier
+```
+
+## .gitignore
+Ensure these are ignored:
+```
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+.env
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+```
+
+## Branch Strategy
+- `main`: Production-ready code
+- `develop`: Development branch (optional for solo projects)
+- `feature/*`: New features
+- `fix/*`: Bug fixes
+
+## GitHub Repository Setup
+1. Create repository on GitHub
+2. Add comprehensive README.md
+3. Add LICENSE file (MIT recommended)
+4. Configure GitHub Pages or Vercel deployment
+5. Add repository description and topics/tags
+
+## Deployment
+Recommended platforms (in order):
+1. **Vercel** (best for Next.js, zero config)
+2. **Netlify** (good alternative)
+3. **GitHub Pages** (requires static export)
+
+### Vercel Deployment
+1. Push to GitHub
+2. Import repository in Vercel
+3. Auto-deploys on push to main
+
+### GitHub Pages (if needed)
+Add to `next.config.js`:
+```javascript
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+};
+```
+
+## Environment Variables
+- Never commit `.env` files
+- Document required env vars in README
+- Use `.env.example` for templates
+- Set env vars in deployment platform
+
+## Pre-deployment Checklist
+- [ ] All dependencies in package.json
+- [ ] README.md is complete
+- [ ] .gitignore is comprehensive
+- [ ] No console.logs or debug code
+- [ ] All TypeScript errors resolved
+- [ ] Build succeeds locally (`npm run build`)
+- [ ] Environment variables documented
+- [ ] LICENSE file added

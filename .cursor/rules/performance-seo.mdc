@@ -1,0 +1,129 @@
+---
+description: Performance optimization and SEO best practices
+globs:
+  - "app/**/*.tsx"
+  - "components/**/*.tsx"
+alwaysApply: true
+---
+
+# Performance & SEO Standards
+
+## Image Optimization
+- Always use `next/image` component, never `<img>`
+- Provide width and height attributes
+- Use appropriate sizes prop for responsive images
+- Optimize images before adding to project (WebP format preferred)
+- Store images in `public/` directory
+
+```tsx
+import Image from 'next/image';
+
+<Image
+  src="/images/hero.jpg"
+  alt="Descriptive alt text"
+  width={1200}
+  height={600}
+  priority // for above-the-fold images
+  className="rounded-lg"
+/>
+```
+
+## Metadata & SEO
+Export metadata from every page:
+
+```typescript
+// Static metadata
+export const metadata = {
+  title: 'Page Title',
+  description: 'Page description for SEO',
+  openGraph: {
+    title: 'Page Title',
+    description: 'Page description',
+    images: ['/og-image.jpg'],
+  },
+};
+
+// Dynamic metadata
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = await getPost(params.slug);
+  
+  return {
+    title: post.title,
+    description: post.summary,
+    openGraph: {
+      title: post.title,
+      description: post.summary,
+      images: [post.image],
+    },
+  };
+}
+```
+
+## Loading States
+- Create `loading.tsx` for route segments
+- Use Suspense boundaries for async components
+- Show skeleton loaders for better UX
+
+```tsx
+// app/blog/loading.tsx
+export default function Loading() {
+  return <div className="animate-pulse">Loading...</div>;
+}
+```
+
+## Code Splitting
+- Import large libraries dynamically
+- Use `next/dynamic` for client-heavy components
+- Lazy load below-the-fold content
+
+```typescript
+import dynamic from 'next/dynamic';
+
+const HeavyComponent = dynamic(() => import('@/components/HeavyComponent'), {
+  loading: () => <p>Loading...</p>,
+  ssr: false, // disable SSR if needed
+});
+```
+
+## Font Optimization
+- Use `next/font` for Google Fonts
+- Preload fonts to prevent layout shift
+- Limit font weights and styles
+
+```typescript
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+```
+
+## Performance Checklist
+- [ ] Use Server Components by default
+- [ ] Minimize client-side JavaScript
+- [ ] Optimize images with next/image
+- [ ] Implement proper caching strategies
+- [ ] Use streaming and Suspense
+- [ ] Minimize third-party scripts
+- [ ] Enable compression (handled by Next.js)
+- [ ] Monitor Core Web Vitals
+
+## SEO Checklist
+- [ ] Unique title and description for each page
+- [ ] Semantic HTML structure (h1, h2, h3, etc.)
+- [ ] Alt text for all images
+- [ ] Open Graph metadata
+- [ ] Sitemap.xml (create in app/sitemap.ts)
+- [ ] Robots.txt (create in app/robots.ts)
+- [ ] Structured data (JSON-LD) for blog posts
+- [ ] Canonical URLs
+
+## Accessibility
+- Use semantic HTML elements
+- Ensure keyboard navigation
+- Provide ARIA labels when needed
+- Test with screen readers
+- Maintain color contrast ratios (WCAG AA)
+- Include skip-to-content link

@@ -1,0 +1,67 @@
+---
+description: Tailwind CSS styling conventions and best practices
+globs:
+  - "**/*.tsx"
+  - "**/*.jsx"
+alwaysApply: true
+---
+
+# Tailwind CSS Standards
+
+## General Principles
+- Use Tailwind utility classes exclusively; avoid custom CSS unless absolutely necessary
+- Implement mobile-first responsive design
+- Support both light and dark modes using `dark:` variant
+- Use semantic color names from theme configuration
+
+## Class Organization
+Order Tailwind classes logically:
+1. Layout (display, position, flex/grid)
+2. Sizing (width, height, padding, margin)
+3. Typography (font, text size, weight, color)
+4. Visual (background, border, shadow)
+5. Interactive (hover, focus, active states)
+6. Responsive breakpoints
+7. Dark mode variants
+
+Example:
+```tsx
+<div className="flex items-center justify-between w-full px-4 py-2 text-lg font-semibold bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 md:px-6 md:py-3 dark:bg-gray-800 dark:border-gray-700">
+```
+
+## Responsive Design
+- Mobile-first: base styles for mobile, then add breakpoints
+- Breakpoints: `sm:` (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px), `2xl:` (1536px)
+- Test all layouts on mobile, tablet, and desktop
+
+## Dark Mode
+- Use `dark:` variant for all color-related classes
+- Ensure proper contrast in both themes
+- Test theme toggle functionality
+- Use semantic colors that adapt: `bg-white dark:bg-gray-900`
+
+## Common Patterns
+```tsx
+// Container
+<div className="container mx-auto px-4 max-w-7xl">
+
+// Card
+<div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+
+// Button
+<button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+
+// Link
+<a className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline-offset-4 hover:underline">
+```
+
+## Accessibility
+- Include focus states for all interactive elements
+- Use `focus:ring-2` and `focus:outline-none` for custom focus styles
+- Ensure color contrast meets WCAG AA standards
+- Use `sr-only` for screen reader only text
+
+## Performance
+- Avoid overly long className strings; extract to components if needed
+- Use Tailwind's `@apply` directive sparingly (prefer utility classes)
+- Purge unused styles in production (configured in tailwind.config.ts)

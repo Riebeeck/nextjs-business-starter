@@ -1,0 +1,286 @@
+---
+title: "Task Management Application"
+date: "2025-08-20"
+summary: "A full-stack task management application with real-time collaboration, built with Next.js, PostgreSQL, and Prisma."
+description: "A comprehensive task management solution featuring real-time updates, team collaboration, and advanced filtering. Built with modern web technologies and deployed on Vercel."
+technologies: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Tailwind CSS", "NextAuth.js", "Vercel"]
+github: "https://github.com/Riebeeck/task-manager"
+demo: "https://tasks.riebeeck.dev"
+image: "/images/projects/task-manager.jpg"
+---
+
+# Task Management Application
+
+A powerful, real-time task management application designed for teams and individuals to organize their work efficiently.
+
+## Project Overview
+
+This full-stack application provides a comprehensive solution for task management with features like real-time collaboration, advanced filtering, and team management. It's built with a focus on performance, user experience, and scalability.
+
+## Key Features
+
+### Core Functionality
+
+- **Task Management** - Create, edit, delete, and organize tasks
+- **Real-time Updates** - See changes instantly across all devices
+- **Team Collaboration** - Invite team members and assign tasks
+- **Priority Levels** - Organize tasks by urgency (High, Medium, Low)
+- **Due Dates** - Set deadlines and get reminders
+- **Tags and Labels** - Categorize tasks for easy filtering
+- **Search and Filter** - Find tasks quickly with advanced search
+
+### User Experience
+
+- **Drag and Drop** - Reorder tasks intuitively
+- **Keyboard Shortcuts** - Power user features for efficiency
+- **Dark Mode** - Easy on the eyes during late-night work
+- **Mobile Responsive** - Full functionality on all devices
+- **Offline Support** - Continue working without internet
+
+### Technical Features
+
+- **Authentication** - Secure login with NextAuth.js
+- **Database** - PostgreSQL with Prisma ORM
+- **API Routes** - RESTful API built with Next.js
+- **Type Safety** - Full TypeScript coverage
+- **Real-time** - WebSocket connections for live updates
+
+## Architecture
+
+### Frontend
+
+Built with Next.js 14 and React, the frontend uses:
+
+- **Server Components** for initial page loads
+- **Client Components** for interactive features
+- **React Query** for data fetching and caching
+- **Zustand** for client-side state management
+- **Tailwind CSS** for styling
+
+### Backend
+
+The backend leverages Next.js API routes with:
+
+- **Prisma** as the ORM for database operations
+- **PostgreSQL** for data persistence
+- **NextAuth.js** for authentication
+- **Zod** for runtime validation
+- **JWT** for secure token management
+
+### Database Schema
+
+```prisma
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  tasks     Task[]
+  teams     TeamMember[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      Status   @default(TODO)
+  priority    Priority @default(MEDIUM)
+  dueDate     DateTime?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  tags        Tag[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Team {
+  id        String       @id @default(cuid())
+  name      String
+  members   TeamMember[]
+  createdAt DateTime     @default(now())
+}
+
+enum Status {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+```
+
+## Implementation Highlights
+
+### Real-time Updates
+
+Implemented using Server-Sent Events (SSE) for efficient real-time communication:
+
+```typescript
+// app/api/tasks/stream/route.ts
+export async function GET(request: Request) {
+  const encoder = new TextEncoder();
+  
+  const stream = new ReadableStream({
+    async start(controller) {
+      // Subscribe to task updates
+      const subscription = subscribeToTaskUpdates((task) => {
+        const data = encoder.encode(`data: ${JSON.stringify(task)}\n\n`);
+        controller.enqueue(data);
+      });
+      
+      // Cleanup on disconnect
+      request.signal.addEventListener('abort', () => {
+        subscription.unsubscribe();
+        controller.close();
+      });
+    },
+  });
+  
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    },
+  });
+}
+```
+
+### Optimistic Updates
+
+For better UX, changes appear instantly before server confirmation:
+
+```typescript
+const { mutate } = useMutation({
+  mutationFn: updateTask,
+  onMutate: async (newTask) => {
+    // Cancel outgoing refetches
+    await queryClient.cancelQueries({ queryKey: ['tasks'] });
+    
+    // Snapshot previous value
+    const previousTasks = queryClient.getQueryData(['tasks']);
+    
+    // Optimistically update
+    queryClient.setQueryData(['tasks'], (old) => 
+      old.map((task) => task.id === newTask.id ? newTask : task)
+    );
+    
+    return { previousTasks };
+  },
+  onError: (err, newTask, context) => {
+    // Rollback on error
+    queryClient.setQueryData(['tasks'], context.previousTasks);
+  },
+  onSettled: () => {
+    // Refetch after mutation
+    queryClient.invalidateQueries({ queryKey: ['tasks'] });
+  },
+});
+```
+
+### Advanced Filtering
+
+Implemented with URL search params for shareable filtered views:
+
+```typescript
+function TaskList() {
+  const searchParams = useSearchParams();
+  const status = searchParams.get('status');
+  const priority = searchParams.get('priority');
+  const tags = searchParams.getAll('tag');
+  
+  const { data: tasks } = useQuery({
+    queryKey: ['tasks', { status, priority, tags }],
+    queryFn: () => fetchTasks({ status, priority, tags }),
+  });
+  
+  return (
+    <div>
+      <TaskFilters />
+      <TaskGrid tasks={tasks} />
+    </div>
+  );
+}
+```
+
+## Challenges Overcome
+
+### Challenge 1: Real-time Synchronization
+
+**Problem:** Keeping data in sync across multiple clients without overwhelming the server.
+
+**Solution:** Implemented debounced updates and intelligent conflict resolution. Used optimistic updates for instant feedback while queuing actual server updates.
+
+### Challenge 2: Performance with Large Datasets
+
+**Problem:** Slow rendering with thousands of tasks.
+
+**Solution:** Implemented virtual scrolling, pagination, and smart caching strategies. Tasks are loaded in batches and rendered only when visible.
+
+### Challenge 3: Offline Functionality
+
+**Problem:** Users wanted to work without internet connection.
+
+**Solution:** Implemented service workers for offline support and IndexedDB for local storage. Changes sync automatically when connection is restored.
+
+## Testing Strategy
+
+- **Unit Tests:** Jest for utility functions and hooks
+- **Integration Tests:** React Testing Library for components
+- **E2E Tests:** Playwright for critical user flows
+- **API Tests:** Supertest for endpoint testing
+- **Coverage:** Maintained 80%+ code coverage
+
+## Deployment
+
+Deployed on Vercel with:
+
+- **Automatic deployments** from main branch
+- **Preview deployments** for pull requests
+- **Environment variables** for secrets
+- **PostgreSQL database** on Railway
+- **CDN** for static assets
+- **Analytics** with Vercel Analytics
+
+## Results and Impact
+
+- **Users:** 500+ active users
+- **Tasks Created:** 10,000+ tasks managed
+- **Performance:** 98 Lighthouse score
+- **Uptime:** 99.9% availability
+- **Load Time:** < 1.5s average
+
+## Lessons Learned
+
+1. **Start with a solid schema** - Database design is crucial for scalability
+2. **Optimize early** - Performance issues are harder to fix later
+3. **User feedback is invaluable** - Real users find edge cases you never considered
+4. **Type safety saves time** - TypeScript caught countless bugs before production
+5. **Testing pays off** - Comprehensive tests enabled confident refactoring
+
+## Future Roadmap
+
+- [ ] Mobile apps (React Native)
+- [ ] Calendar integration
+- [ ] Time tracking
+- [ ] Gantt chart view
+- [ ] Custom workflows
+- [ ] API for third-party integrations
+- [ ] AI-powered task suggestions
+
+## Conclusion
+
+This project taught me the importance of building scalable, user-focused applications. From database design to real-time updates, every aspect required careful consideration and iteration based on user feedback.
+
+---
+
+**Tech Stack:** Next.js, TypeScript, PostgreSQL, Prisma, Tailwind CSS, NextAuth.js
+
+**Links:**
+- [View Source Code](https://github.com/Riebeeck/task-manager)
+- [Live Demo](https://tasks.riebeeck.dev)

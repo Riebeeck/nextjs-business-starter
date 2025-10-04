@@ -1,0 +1,124 @@
+---
+description: Component architecture and organization standards
+globs:
+  - "components/**/*.tsx"
+  - "app/**/*.tsx"
+alwaysApply: true
+---
+
+# Component Standards
+
+## Component Types
+
+### Server Components (Default)
+- Use for static content, data fetching, and layouts
+- Can directly access backend resources
+- Better performance (no JavaScript sent to client)
+- Cannot use hooks or event handlers
+
+### Client Components
+- Add `"use client"` directive at the top
+- Use for interactivity, hooks, browser APIs
+- Required for: useState, useEffect, event handlers, theme toggle
+- Keep client components small and focused
+
+## Component Structure
+```typescript
+// 1. Imports
+import { ComponentType } from 'react';
+import { externalLibrary } from 'library';
+
+// 2. Types/Interfaces
+interface ComponentProps {
+  title: string;
+  optional?: boolean;
+}
+
+// 3. Component
+export default function Component({ title, optional = false }: ComponentProps) {
+  // 4. Hooks (if client component)
+  // 5. Event handlers
+  // 6. Render logic
+  
+  return (
+    <div>
+      {/* JSX */}
+    </div>
+  );
+}
+
+// 7. Helper functions (if any)
+```
+
+## Naming Conventions
+- Components: PascalCase (`Header.tsx`, `BlogCard.tsx`)
+- Props interfaces: `ComponentNameProps`
+- Event handlers: `handleEventName` or `onEventName`
+- Boolean props: `isActive`, `hasError`, `canEdit`
+
+## Props Guidelines
+- Destructure props in function parameters
+- Provide default values for optional props
+- Keep prop lists manageable (< 7 props)
+- Use children for composition
+- Pass objects for complex data
+
+## Component Organization
+```
+components/
+├── layout/          # Layout components (Header, Footer, Nav)
+├── ui/              # Reusable UI elements (Button, Card, Input)
+├── blog/            # Blog-specific components
+├── projects/        # Project-specific components
+└── theme/           # Theme-related components (ThemeToggle)
+```
+
+## Best Practices
+- One component per file
+- Keep components under 200 lines
+- Extract complex logic to custom hooks
+- Use composition over props drilling
+- Memoize expensive computations
+- Avoid inline functions in JSX (define outside render)
+
+## Accessibility
+- Use semantic HTML elements
+- Include ARIA labels when needed
+- Ensure keyboard navigation works
+- Provide alt text for images
+- Use proper heading hierarchy
+
+## Example: Reusable Card Component
+```typescript
+interface CardProps {
+  title: string;
+  description: string;
+  image?: string;
+  href?: string;
+  children?: React.ReactNode;
+}
+
+export default function Card({ 
+  title, 
+  description, 
+  image, 
+  href,
+  children 
+}: CardProps) {
+  const Wrapper = href ? 'a' : 'div';
+  
+  return (
+    <Wrapper 
+      href={href}
+      className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6"
+    >
+      {image && (
+        <img src={image} alt={title} className="w-full h-48 object-cover rounded-md mb-4" />
+      )}
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
+      {children}
+    </Wrapper>
+  );
+}
+```

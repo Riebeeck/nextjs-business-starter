@@ -1,0 +1,92 @@
+---
+description: MDX content management and frontmatter standards
+globs:
+  - "content/**/*.mdx"
+  - "lib/content*.ts"
+alwaysApply: false
+---
+
+# Content & MDX Standards
+
+## Frontmatter Structure
+
+### Blog Posts (`content/blog/*.mdx`)
+Required fields:
+```yaml
+---
+title: "Post Title"
+date: "2025-10-04"
+summary: "Brief description of the post (150-200 characters)"
+---
+```
+
+Optional fields:
+```yaml
+author: "Your Name"
+tags: ["nextjs", "typescript", "web-development"]
+image: "/images/blog/post-image.jpg"
+published: true
+```
+
+### Projects (`content/projects/*.mdx`)
+Required fields:
+```yaml
+---
+title: "Project Name"
+date: "2025-10-04"
+summary: "Brief project description"
+---
+```
+
+Optional fields:
+```yaml
+tags: ["nextjs", "react", "tailwind"]
+image: "/images/projects/project-image.jpg"
+github: "https://github.com/username/repo"
+demo: "https://project-demo.com"
+featured: true
+```
+
+## File Naming
+- Use kebab-case: `my-first-blog-post.mdx`
+- Be descriptive and SEO-friendly
+- Avoid special characters and spaces
+- File name becomes the URL slug
+
+## Content Guidelines
+- Use proper markdown hierarchy (# for title, ## for sections, ### for subsections)
+- Include code blocks with language specification for syntax highlighting
+- Keep paragraphs concise (3-5 sentences)
+- Use lists for better readability
+- Add alt text to all images
+
+## Code Blocks
+Always specify the language:
+```tsx
+// Good
+export default function Component() {
+  return <div>Hello</div>;
+}
+```
+
+## Content Parsing
+- Parse frontmatter using `gray-matter`
+- Sort content by date (newest first)
+- Validate required fields exist
+- Handle missing or malformed frontmatter gracefully
+- Cache parsed content in production
+
+## Type Safety
+Define TypeScript interfaces for content:
+```typescript
+interface BlogPost {
+  slug: string;
+  title: string;
+  date: string;
+  summary: string;
+  author?: string;
+  tags?: string[];
+  image?: string;
+  content: string;
+}
+```

@@ -1,0 +1,314 @@
+---
+description: Next.js 15+ App Router and TypeScript best practices
+globs:
+  - "**/*.ts"
+  - "**/*.tsx"
+alwaysApply: true
+---
+
+# Next.js & TypeScript Standards
+
+## Environment Requirements
+- **Node.js**: 18.17.0 or higher
+- **npm**: 9.0.0 or higher
+- **Package Manager**: npm (default), yarn, or pnpm
+- **Dependency Tracking**: All dependencies in package.json with specific versions
+- **Version Locking**: package-lock.json must be committed to Git
+
+## App Router vs Pages Router
+
+**CRITICAL: This project uses App Router exclusively**
+
+### ✅ App Router (What We Use)
+- **Directory:** `app/` folder
+- **Routing:** Folder-based with `page.tsx` files
+- **Data Fetching:** Async Server Components with `async/await`
+- **Layouts:** Nested `layout.tsx` files
+- **Metadata:** `metadata` export or `generateMetadata` function
+- **Status:** Modern, recommended, React Server Components
+
+### ❌ Pages Router (DO NOT USE)
+- **Directory:** `pages/` folder (forbidden in this project)
+- **Routing:** File-based with `index.js`, `about.js`
+- **Data Fetching:** `getStaticProps`, `getServerSideProps`, `getStaticPaths`
+- **Layouts:** Custom `_app.js` and `_document.js`
+- **Metadata:** `<Head>` component
+- **Status:** Legacy (still supported but not used here)
+
+**Rule:** Never create a `pages/` directory or use Pages Router conventions.
+
+## Framework Requirements
+
+### App Router Structure
+- Always use Next.js 15+ App Router (not Pages Router)
+- Use `app/` directory structure, never `pages/`
+- Implement Server Components by default; only use Client Components when necessary
+- Add `"use client"` directive only when using hooks, event handlers, or browser APIs
+
+### File Conventions
+```
+app/
+├── layout.tsx              # Root layout (required)
+├── page.tsx                # Home page (required)
+├── loading.tsx             # Loading UI (optional)
+├── error.tsx               # Error boundary (optional)
+├── not-found.tsx           # 404 page (optional)
+├── globals.css             # Global styles
+├── about/
+│   └── page.tsx            # /about route
+├── blog/
+│   ├── page.tsx            # /blog route
+│   └── [slug]/
+│       ├── page.tsx        # /blog/:slug route
+│       └── loading.tsx     # Loading state for this route
+└── projects/
+    └── [slug]/
+        └── page.tsx        # /projects/:slug route
+```
+
+## TypeScript Standards
+- Use strict mode TypeScript
+- Define explicit types for all props, functions, and exports
+- Avoid `any` type; use `unknown` if type is truly unknown
+- Create type definitions in separate files when shared across components
+- Use interfaces for object shapes, types for unions/intersections
+
+## File Naming Conventions
+- Use PascalCase for components: `Header.tsx`, `BlogPost.tsx`
+- Use camelCase for utilities: `contentParser.ts`, `formatDate.ts`
+- Use kebab-case for route segments: `app/blog/[slug]/page.tsx`
+- Special Next.js files: `layout.tsx`, `page.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`
+- Dynamic routes: Use `[param]` folders, e.g., `[slug]/`, `[id]/`
+
+## Server Components vs Client Components
+
+### Server Components (Default - Preferred)
+```typescript
+// No directive needed - Server Component by default
+interface PageProps {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+// Can be async!
+export default async function BlogPost({ params }: PageProps) {
+  const post = await getPost(params.slug); // Direct data fetching
+  
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <div>{post.content}</div>
+    </article>
+  );
+}
+```
+
+**Use Server Components for:**
+- Fetching data from APIs or databases
+- Accessing backend resources directly
+- Keeping sensitive information on server (API keys, tokens)
+- Reducing client-side JavaScript
+- Static content rendering
+
+### Client Components (When Needed)
+```typescript
+"use client"; // Required at top of file
+
+import { useState } from "react";
+
+export default function ThemeToggle() {
+  const [theme, setTheme] = useState("light");
+  
+  return (
+    <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+      Toggle Theme
+    </button>
+  );
+}
+```
+
+**Use Client Components for:**
+- Interactive elements (onClick, onChange, etc.)
+- React hooks (useState, useEffect, useContext, etc.)
+- Browser APIs (localStorage, window, document)
+- Event listeners
+- Real-time updates
+
+**Rule:** Start with Server Component, only add "use client" when you need interactivity.
+
+## Data Fetching in App Router
+
+### Async Server Components (Preferred)
+```typescript
+// app/blog/[slug]/page.tsx
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  // Direct async/await - no getStaticProps needed!
+  const post = await fetch(`https://api.example.com/posts/${params.slug}`).then(r => r.json());
+  
+  return <article>{post.title}</article>;
+}
+
+// Generate static params for static generation
+export async function generateStaticParams() {
+  const posts = await fetch('https://api.example.com/posts').then(r => r.json());
+  
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+```
+
+### ❌ DO NOT USE (Pages Router methods)
+```typescript
+// ❌ WRONG - Pages Router syntax
+export async function getStaticProps() { ... }
+export async function getServerSideProps() { ... }
+export async function getStaticPaths() { ... }
+```
+
+## Metadata & SEO
+
+### Static Metadata
+```typescript
+// app/layout.tsx or app/page.tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Portfolio',
+  description: 'Welcome to my portfolio',
+  openGraph: {
+    title: 'My Portfolio',
+    description: 'Welcome to my portfolio',
+    images: ['/og-image.jpg'],
+  },
+};
+```
+
+### Dynamic Metadata
+```typescript
+// app/blog/[slug]/page.tsx
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await getPost(params.slug);
+  
+  return {
+    title: post.title,
+    description: post.summary,
+    openGraph: {
+      title: post.title,
+      description: post.summary,
+      images: [post.image],
+    },
+  };
+}
+```
+
+### ❌ DO NOT USE (Pages Router method)
+```typescript
+// ❌ WRONG - Pages Router syntax
+import Head from 'next/head';
+
+<Head>
+  <title>My Page</title>
+</Head>
+```
+
+## Routing Patterns
+
+### Static Routes
+```
+app/about/page.tsx        → /about
+app/blog/page.tsx         → /blog
+app/projects/page.tsx     → /projects
+```
+
+### Dynamic Routes
+```
+app/blog/[slug]/page.tsx           → /blog/:slug
+app/projects/[id]/page.tsx         → /projects/:id
+app/shop/[category]/[item]/page.tsx → /shop/:category/:item
+```
+
+### Route Groups (Organization without URL impact)
+```
+app/(marketing)/about/page.tsx     → /about
+app/(marketing)/contact/page.tsx   → /contact
+app/(shop)/products/page.tsx       → /products
+```
+
+### Parallel Routes (Multiple pages in same layout)
+```
+app/@modal/login/page.tsx
+app/@sidebar/navigation/page.tsx
+app/layout.tsx  # Can render both
+```
+
+## Layouts and Templates
+
+### Root Layout (Required)
+```typescript
+// app/layout.tsx
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+### Nested Layouts
+```typescript
+// app/blog/layout.tsx
+export default function BlogLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div>
+      <nav>Blog Navigation</nav>
+      {children}
+    </div>
+  );
+}
+```
+
+## Loading and Error States
+
+### Loading UI
+```typescript
+// app/blog/loading.tsx
+export default function Loading() {
+  return <div>Loading blog posts...</div>;
+}
+```
+
+### Error Boundaries
+```typescript
+// app/blog/error.tsx
+'use client'; // Error components must be Client Components
+
+export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+  return (
+    <div>
+      <h2>Something went wrong!</h2>
+      <button onClick={() => reset()}>Try again</button>
+    </div>
+  );
+}
+```
+
+### Not Found
+```typescript
+// app/blog/not-found.tsx
+export default function NotFound() {
+  return <div>Blog post not found</div>;
+}
+```
+
+## Code Quality
+- Prefer async/await over promises
+- Use optional chaining (`?.`) and nullish coalescing (`??`)
+- Destructure props in function parameters
+- Keep components small and focused (< 200 lines)
+- Extract reusable logic into custom hooks or utilities
+- Use Server Components by default, Client Components only when needed
+- Leverage streaming and Suspense for better UX

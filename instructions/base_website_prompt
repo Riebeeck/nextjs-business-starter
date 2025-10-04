@@ -1,0 +1,353 @@
+# Portfolio Website Build Instructions
+
+## Phase 1: Project Initialization & Setup
+
+Create a production-ready Next.js 14+ portfolio website using TypeScript and Tailwind CSS. The project must be:
+- Fully portable and uploadable to GitHub
+- Self-contained with all dependencies properly configured
+- Following modern Next.js App Router best practices
+
+### Initial Setup Requirements:
+
+1. **Initialize Next.js Project:**
+   - Use Next.js 14+ with App Router
+   - Configure TypeScript with strict mode
+   - Set up Tailwind CSS with PostCSS
+   - Install and configure the following dependencies:
+     * `contentlayer` or `next-mdx-remote` for MDX processing
+     * `gray-matter` for frontmatter parsing
+     * `rehype-pretty-code` or `shiki` for code syntax highlighting
+     * `next-themes` for dark mode support
+     * Any necessary type definitions
+
+2. **Project Structure:**
+   ```
+   /
+   ├── app/
+   │   ├── layout.tsx
+   │   ├── page.tsx
+   │   ├── about/
+   │   │   └── page.tsx
+   │   ├── blog/
+   │   │   ├── page.tsx
+   │   │   └── [slug]/
+   │   │       └── page.tsx
+   │   └── projects/
+   │       ├── page.tsx
+   │       └── [slug]/
+   │           └── page.tsx
+   ├── components/
+   │   ├── Header.tsx
+   │   ├── Footer.tsx
+   │   ├── ThemeToggle.tsx
+   │   └── (other reusable components)
+   ├── content/
+   │   ├── blog/
+   │   │   ├── example-post-1.mdx
+   │   │   └── example-post-2.mdx
+   │   └── projects/
+   │       ├── example-project-1.mdx
+   │       └── example-project-2.mdx
+   ├── lib/
+   │   └── (utility functions for content parsing)
+   ├── public/
+   │   └── (images and static assets)
+   ├── package.json
+   ├── tsconfig.json
+   ├── tailwind.config.ts
+   ├── postcss.config.js
+   └── README.md
+   ```
+
+3. **Configuration Files:**
+   - Create `package.json` with all necessary dependencies
+   - Configure `tsconfig.json` with appropriate compiler options
+   - Set up `tailwind.config.ts` with custom theme (Inter or Sora font)
+   - Configure `postcss.config.js` for Tailwind
+   - Add `.gitignore` for Next.js projects
+   - Create a comprehensive `README.md` with setup instructions
+
+### Prompt for Phase 1:
+
+```
+Create a new Next.js 14 project with TypeScript and Tailwind CSS for a personal portfolio website. 
+
+Requirements:
+1. Initialize with App Router (not Pages Router)
+2. Set up TypeScript with strict mode enabled
+3. Configure Tailwind CSS with PostCSS
+4. Install these dependencies:
+   - contentlayer or next-mdx-remote (for MDX)
+   - gray-matter (for frontmatter parsing)
+   - rehype-pretty-code (for code highlighting)
+   - next-themes (for dark mode)
+5. Create the folder structure: app/, components/, content/blog/, content/projects/, lib/, public/
+6. Configure Tailwind to use Inter font from Google Fonts
+7. Set up proper TypeScript types for MDX content with frontmatter (title, date, summary, author)
+8. Create a README.md with setup and deployment instructions
+9. Ensure all configuration files are properly set up for GitHub deployment
+
+Do NOT implement any pages or components yet - just the project scaffolding.
+```
+
+---
+
+## Phase 2: Core Components & Layout
+
+### Prompt for Phase 2:
+
+```
+Build the core layout components for the portfolio website.
+
+Create the following components:
+
+1. **Header Component** (`components/Header.tsx`):
+   - Clean, minimalist design
+   - Navigation links: Home, About, Projects, Blog, Contact
+   - Include ThemeToggle component
+   - Responsive mobile menu (hamburger on mobile)
+   - Sticky header with backdrop blur effect
+
+2. **Footer Component** (`components/Footer.tsx`):
+   - Copyright notice with current year
+   - Social media links (GitHub, LinkedIn, Twitter/X)
+   - Simple, minimal design
+
+3. **ThemeToggle Component** (`components/ThemeToggle.tsx`):
+   - Toggle between light and dark modes
+   - Use next-themes for implementation
+   - Smooth transition animations
+   - Sun/moon icon that changes based on theme
+
+4. **Root Layout** (`app/layout.tsx`):
+   - Implement Header and Footer
+   - Configure Inter font from next/font/google
+   - Set up ThemeProvider from next-themes
+   - Add global metadata (site title, description)
+   - Include proper HTML structure with lang attribute
+
+5. **Tailwind Configuration**:
+   - Define custom color palette for light/dark modes
+   - Set up typography plugin if needed
+   - Configure dark mode strategy (class-based)
+
+Make the design modern, clean, and professional. Use Tailwind's utility classes effectively.
+```
+
+---
+
+## Phase 3: Content Infrastructure
+
+### Prompt for Phase 3:
+
+```
+Set up the content management system using MDX files.
+
+1. **Content Utilities** (`lib/content.ts` or similar):
+   - Create functions to read and parse MDX files from content/blog/ and content/projects/
+   - Parse frontmatter using gray-matter
+   - Sort content by date (newest first)
+   - Generate slugs from filenames
+   - TypeScript interfaces for BlogPost and Project types:
+     * title: string
+     * date: string
+     * summary: string
+     * author?: string
+     * tags?: string[]
+     * image?: string
+
+2. **MDX Configuration**:
+   - Set up rehype-pretty-code or shiki for code syntax highlighting
+   - Configure MDX components for custom styling (headings, links, code blocks, etc.)
+   - Create a components map for MDX rendering
+
+3. **Sample Content**:
+   - Create 2 example blog posts in content/blog/:
+     * Include frontmatter with all metadata
+     * Add sample markdown content with headings, lists, links, and code blocks
+     * Use realistic technical content
+   - Create 2 example projects in content/projects/:
+     * Include frontmatter with metadata
+     * Add detailed project descriptions
+     * Include technology stack information
+
+Ensure all TypeScript types are properly defined and exported.
+```
+
+---
+
+## Phase 4: Page Implementation
+
+### Prompt for Phase 4:
+
+```
+Implement all pages for the portfolio website.
+
+1. **Homepage** (`app/page.tsx`):
+   - Hero section with compelling bio (2-3 sentences)
+   - "Recent Posts" section showing 3 most recent blog posts
+   - "Featured Projects" section showing 3 featured projects
+   - Each card should be clickable and link to the full content
+   - Use grid layout for projects, list for blog posts
+   - Add proper spacing and visual hierarchy
+
+2. **About Page** (`app/about/page.tsx`):
+   - Static page with placeholder content
+   - Professional bio section
+   - Skills/technologies section
+   - Experience timeline (optional)
+   - Make it easy to customize later
+
+3. **Blog Archive** (`app/blog/page.tsx`):
+   - List all blog posts sorted by date (newest first)
+   - Show title, date, summary for each post
+   - Make titles clickable linking to /blog/[slug]
+   - Add subtle hover effects
+   - Responsive grid or list layout
+
+4. **Single Blog Post** (`app/blog/[slug]/page.tsx`):
+   - Dynamic route that renders MDX content
+   - Display title, date, author at the top
+   - Render MDX with styled components
+   - Beautiful typography for reading
+   - Code blocks with syntax highlighting
+   - Generate dynamic metadata for SEO
+
+5. **Projects Archive** (`app/projects/page.tsx`):
+   - Grid layout (2-3 columns on desktop, 1 on mobile)
+   - Project cards with image, title, summary
+   - Hover effects and smooth transitions
+   - Link to individual project pages
+
+6. **Single Project** (`app/projects/[slug]/page.tsx`):
+   - Similar to blog post template
+   - Display project details and full description
+   - Technology stack badges/tags
+   - Links to live demo and GitHub repo (if in frontmatter)
+   - Generate dynamic metadata for SEO
+
+All pages must be:
+- Fully responsive (mobile-first)
+- Support light and dark modes
+- Have proper SEO metadata
+- Use consistent spacing and typography
+- Include loading states where appropriate
+```
+
+---
+
+## Phase 5: Polish & Optimization
+
+### Prompt for Phase 5:
+
+```
+Polish the website and ensure production readiness.
+
+1. **SEO & Metadata**:
+   - Add proper metadata to all pages using Next.js metadata API
+   - Create dynamic metadata for blog posts and projects from frontmatter
+   - Add Open Graph images
+   - Include robots.txt and sitemap.xml
+
+2. **Performance**:
+   - Optimize images using next/image
+   - Ensure proper code splitting
+   - Add loading states for dynamic content
+   - Verify Core Web Vitals are good
+
+3. **Styling Polish**:
+   - Ensure consistent spacing throughout
+   - Smooth transitions for theme toggle
+   - Hover states on all interactive elements
+   - Focus states for accessibility
+   - Proper color contrast in both themes
+
+4. **Error Handling**:
+   - Create 404 page (app/not-found.tsx)
+   - Handle missing blog posts/projects gracefully
+   - Add error boundaries if needed
+
+5. **Documentation**:
+   - Update README.md with:
+     * Project description
+     * Tech stack
+     * Setup instructions
+     * How to add new blog posts/projects
+     * Deployment instructions (Vercel, Netlify, GitHub Pages)
+   - Add comments to complex code sections
+
+6. **GitHub Readiness**:
+   - Verify .gitignore is complete
+   - Ensure no sensitive data in code
+   - Add LICENSE file
+   - Test that project works after fresh clone and install
+
+Run the development server and verify everything works correctly.
+```
+
+---
+
+## Key Principles
+
+- **Portability**: All content is in local files, no external dependencies
+- **Best Practices**: Follow Next.js 14+ App Router conventions
+- **Type Safety**: Full TypeScript coverage with proper types
+- **Modern Stack**: Latest versions of all dependencies
+- **Responsive Design**: Mobile-first approach
+- **Accessibility**: Semantic HTML, keyboard navigation, ARIA labels
+- **Performance**: Optimized images, code splitting, fast load times
+- **SEO**: Dynamic metadata, semantic structure, sitemap
+- **Maintainability**: Clean code, consistent patterns, good documentation
+
+---
+
+## Alternative: Single Comprehensive Prompt
+
+If you prefer to run this as a single prompt instead of phases:
+
+```
+Create a complete, production-ready Next.js 14+ portfolio website with TypeScript and Tailwind CSS.
+
+TECH STACK:
+- Next.js 14+ (App Router)
+- TypeScript (strict mode)
+- Tailwind CSS with PostCSS
+- MDX for content (using contentlayer or next-mdx-remote)
+- gray-matter for frontmatter
+- rehype-pretty-code for syntax highlighting
+- next-themes for dark mode
+- Inter font from Google Fonts
+
+PROJECT STRUCTURE:
+Create app/ with: layout.tsx, page.tsx, about/page.tsx, blog/page.tsx, blog/[slug]/page.tsx, projects/page.tsx, projects/[slug]/page.tsx
+Create components/: Header, Footer, ThemeToggle
+Create content/blog/ and content/projects/ with 2 example .mdx files each
+Create lib/ for content parsing utilities
+
+PAGES:
+1. Homepage: Hero with bio, 3 recent blog posts, 3 featured projects
+2. About: Static about page
+3. Blog Archive: List all posts by date with title, date, summary
+4. Blog Post: Dynamic MDX rendering with syntax highlighting
+5. Projects Archive: Grid of project cards
+6. Project Detail: Full project case study
+
+FEATURES:
+- Light/dark mode toggle with smooth transitions
+- Fully responsive, mobile-first design
+- Dynamic SEO metadata from frontmatter
+- Clean, minimalist UI with modern typography
+- Sticky header with navigation
+- Code syntax highlighting in blog posts
+- TypeScript types for all content
+
+REQUIREMENTS:
+- All configuration files (package.json, tsconfig.json, tailwind.config.ts, postcss.config.js)
+- Comprehensive README.md with setup and deployment instructions
+- Proper .gitignore for Next.js
+- Ready to upload to GitHub and deploy to Vercel
+- All dependencies with specific versions in package.json
+- Sample content that demonstrates all features
+
+Make it beautiful, professional, and production-ready.
+```
