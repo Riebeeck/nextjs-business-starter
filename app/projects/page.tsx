@@ -1,74 +1,82 @@
-import Link from 'next/link';
+'use client';
+
+import { useState } from 'react';
 import type { Metadata } from 'next';
-import { getAllProjects } from '@/lib/content';
+import { projects, projectCategories, getProjectsByCategory } from '@/lib/projects';
+import ProjectCard from './components/ProjectCard';
+import EmptyState from './components/EmptyState';
 
-export const metadata: Metadata = {
-  title: 'Projects',
-  description: 'A showcase of software development projects, experiments, and case studies.',
-};
+export default function ProjectsPage() {
+  const [activeTab, setActiveTab] = useState<keyof typeof projectCategories>('ai');
 
-export default async function Projects() {
-  const projects = await getAllProjects();
+  const categoryProjects = getProjectsByCategory(activeTab);
+  const category = projectCategories[activeTab];
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen py-16" style={{ backgroundColor: 'var(--theme-background)' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Projects
+        <div className="text-center mb-12">
+          <h1
+            className="text-3xl md:text-4xl font-semibold mb-4"
+            style={{ color: 'var(--theme-text)' }}
+          >
+            Our Work
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            A collection of projects I&apos;ve built, from web applications to open source
-            contributions.
+          <p
+            className="text-base md:text-lg max-w-3xl mx-auto"
+            style={{ color: 'var(--theme-text-secondary)' }}
+          >
+            Explore projects across data engineering, machine learning, AI, DevOps, and analytics.
+            From scalable data pipelines to ML operations and infrastructure automation.
+          </p>
+        </div>
+
+        {/* Category Tabs */}
+        <div
+          className="flex flex-wrap justify-center gap-2 mb-8 pb-4 border-b"
+          style={{ borderColor: 'var(--theme-border)' }}
+        >
+          {Object.entries(projectCategories).map(([key, cat]) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key as keyof typeof projectCategories)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === key ? 'shadow-md' : 'hover:opacity-80'
+              }`}
+              style={{
+                backgroundColor:
+                  activeTab === key ? 'var(--theme-primary)' : 'var(--theme-bg-tertiary)',
+                color: activeTab === key ? 'var(--theme-background)' : 'var(--theme-text-secondary)',
+                border: activeTab === key ? 'none' : '1px solid var(--theme-border)',
+              }}
+            >
+              <span className="mr-2">{cat.emoji}</span>
+              {cat.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Category Description */}
+        <div className="text-center mb-8">
+          <p className="text-sm" style={{ color: 'var(--theme-text-secondary)' }}>
+            {category.description}
           </p>
         </div>
 
         {/* Projects Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <Link
-              key={project.slug}
-              href={`/projects/${project.slug}`}
-              className="group block"
-            >
-              <article className="h-full p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:shadow-lg transition-all">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {project.title}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{project.summary}</p>
-                
-                {project.technologies && project.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.slice(0, 4).map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 4 && (
-                      <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded">
-                        +{project.technologies.length - 4}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                <div className="flex gap-4 text-sm text-blue-600 dark:text-blue-400">
-                  {project.github && <span>GitHub →</span>}
-                  {project.demo && <span>Live Demo →</span>}
-                </div>
-              </article>
-            </Link>
-          ))}
-        </div>
-
-        {projects.length === 0 && (
-          <p className="text-center text-gray-600 dark:text-gray-400 py-12">
-            No projects yet. Check back soon!
-          </p>
+        {categoryProjects.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categoryProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            category={category.name}
+            emoji={category.emoji}
+            description={category.description}
+          />
         )}
       </div>
     </div>

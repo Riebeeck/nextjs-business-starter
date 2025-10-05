@@ -9,126 +9,213 @@ export default async function Home() {
   const featuredProjects = projects.slice(0, 3);
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Hero Section */}
-        <section className="py-16 md:py-24 lg:py-32">
-          <h1 className="text-2xl md:text-3xl font-medium text-gray-900 dark:text-white mb-4 max-w-3xl">
+    <div style={{ backgroundColor: 'var(--theme-background)' }}>
+      {/* Hero Section with subtle gradient */}
+      <section className="relative py-20 md:py-32 lg:py-40 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `linear-gradient(135deg, rgba(var(--theme-primary-rgb), 0.1) 0%, rgba(var(--theme-background-rgb), 1) 50%, rgba(var(--theme-accent-rgb), 0.1) 100%)`,
+          }}
+        />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1
+            className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 max-w-4xl mx-auto leading-tight"
+            style={{ color: 'var(--theme-text)' }}
+          >
             Building digital products with clean code and thoughtful design
           </h1>
-          <p className="text-base text-gray-600 dark:text-gray-400 mb-8 max-w-2xl">
-            A collection of projects, experiments, and insights from the world of modern web development.
+          <p
+            className="text-lg mb-10 max-w-2xl mx-auto"
+            style={{ color: 'var(--theme-text-secondary)' }}
+          >
+            Scalable solutions for data engineering, machine learning, and modern web development.
           </p>
-          <div className="flex gap-3 flex-wrap">
-            <Link
-              href="/projects"
-              className="px-4 py-2 bg-gray-900 text-white text-sm rounded-md hover:bg-gray-800 transition-colors dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
-            >
-              View Work
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link href="/projects">
+              <button
+                className="px-6 py-3 rounded-md font-medium transition-all hover:opacity-90"
+                style={{
+                  backgroundColor: 'var(--theme-primary)',
+                  color: 'var(--theme-text)',
+                }}
+              >
+                View Work
+              </button>
             </Link>
-            <Link
-              href="/blog"
-              className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-            >
-              Read Articles
+            <Link href="/blog">
+              <button
+                className="px-6 py-3 rounded-md font-medium transition-all border"
+                style={{
+                  backgroundColor: 'var(--theme-bg-tertiary)',
+                  borderColor: 'var(--theme-border)',
+                  color: 'var(--theme-text)',
+                }}
+              >
+                Read Articles
+              </button>
             </Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Recent Posts */}
-        <section className="py-12 md:py-16 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl md:text-2xl font-medium text-gray-900 dark:text-white">Recent Writing</h2>
+      {/* Recent Posts */}
+      <section
+        className="py-16 md:py-24 border-t"
+        style={{ borderColor: 'var(--theme-border)' }}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center mb-8">
+            <h2
+              className="text-2xl md:text-3xl font-semibold"
+              style={{ color: 'var(--theme-text)' }}
+            >
+              Recent Writing
+            </h2>
             <Link
               href="/blog"
-              className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+              className="text-sm font-medium transition-colors hover:opacity-80"
+              style={{ color: 'var(--theme-primary)' }}
             >
               View all →
             </Link>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {recentPosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group block p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-all"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
-                    {post.title}
-                  </h3>
-                  <time className="text-xs text-gray-500 dark:text-gray-400">
-                    {new Date(post.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </time>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">{post.summary}</p>
-                {post.tags && post.tags.length > 0 && (
-                  <div className="flex gap-2 mt-3">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+              <Link key={post.slug} href={`/blog/${post.slug}`} className="block">
+                <div
+                  className="rounded-lg border p-6 shadow-sm transition-all hover:shadow-md hover-theme-lift"
+                  style={{
+                    backgroundColor: 'var(--theme-bg-tertiary)',
+                    borderColor: 'var(--theme-border)',
+                  }}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                    <h3
+                      className="text-lg font-semibold"
+                      style={{ color: 'var(--theme-text)' }}
+                    >
+                      {post.title}
+                    </h3>
+                    <time
+                      className="text-sm"
+                      style={{ color: 'var(--theme-text-tertiary)' }}
+                    >
+                      {new Date(post.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })}
+                    </time>
                   </div>
-                )}
+                  <p
+                    className="text-base mb-4"
+                    style={{ color: 'var(--theme-text-secondary)' }}
+                  >
+                    {post.summary}
+                  </p>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex gap-2 flex-wrap">
+                      {post.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium transition-colors"
+                          style={{
+                            backgroundColor: 'var(--theme-bg-secondary)',
+                            color: 'var(--theme-text-secondary)',
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </Link>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Featured Projects */}
-        <section className="py-12 md:py-16 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl md:text-2xl font-medium text-gray-900 dark:text-white">
+      {/* Featured Projects */}
+      <section
+        className="py-16 md:py-24 border-t"
+        style={{
+          borderColor: 'var(--theme-border)',
+          backgroundColor: 'var(--theme-bg-secondary)',
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center mb-8">
+            <h2
+              className="text-2xl md:text-3xl font-semibold"
+              style={{ color: 'var(--theme-text)' }}
+            >
               Featured Work
             </h2>
             <Link
               href="/projects"
-              className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+              className="text-sm font-medium transition-colors hover:opacity-80"
+              style={{ color: 'var(--theme-primary)' }}
             >
               View all →
             </Link>
           </div>
-          <div className="grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {featuredProjects.map((project) => (
-              <Link
-                key={project.slug}
-                href={`/projects/${project.slug}`}
-                className="group block p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-all"
-              >
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{project.summary}</p>
-                {project.technologies && project.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.slice(0, 3).map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded">
-                        +{project.technologies.length - 3}
-                      </span>
-                    )}
-                  </div>
-                )}
+              <Link key={project.slug} href={`/projects/${project.slug}`} className="block">
+                <div
+                  className="rounded-lg border p-6 shadow-sm transition-all hover:shadow-md hover-theme-lift"
+                  style={{
+                    backgroundColor: 'var(--theme-bg-tertiary)',
+                    borderColor: 'var(--theme-border)',
+                  }}
+                >
+                  <h3
+                    className="text-lg font-semibold mb-3"
+                    style={{ color: 'var(--theme-text)' }}
+                  >
+                    {project.title}
+                  </h3>
+                  <p
+                    className="text-base mb-4"
+                    style={{ color: 'var(--theme-text-secondary)' }}
+                  >
+                    {project.summary}
+                  </p>
+                  {project.technologies && project.technologies.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.slice(0, 3).map((tech) => (
+                        <span
+                          key={tech}
+                          className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium transition-colors"
+                          style={{
+                            backgroundColor: `rgba(var(--theme-primary-rgb), 0.1)`,
+                            color: 'var(--theme-primary)',
+                          }}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.technologies.length > 3 && (
+                        <span
+                          className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium transition-colors"
+                          style={{
+                            backgroundColor: 'var(--theme-bg-secondary)',
+                            color: 'var(--theme-text-secondary)',
+                          }}
+                        >
+                          +{project.technologies.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
               </Link>
             ))}
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

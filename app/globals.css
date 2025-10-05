@@ -1,24 +1,110 @@
 @import 'tailwindcss';
 
+/* Three-Theme System - Coastal Mist (Default), Warm Terracotta, Lavender & Mint */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default theme (Coastal Mist) - DARKER TEXT FOR BETTER CONTRAST */
+  --theme-primary: #5B8DB8;
+  --theme-primary-rgb: 91, 141, 184;
+  --theme-accent: #4A8A86;
+  --theme-accent-rgb: 74, 138, 134;
+  
+  /* Backgrounds */
+  --theme-background: #F0F2F5;
+  --theme-background-rgb: 240, 242, 245;
+  --theme-bg-secondary: #E8EAED;
+  --theme-bg-tertiary: #DFE1E4;
+  
+  /* Text - Much darker for readability */
+  --theme-text: #1A1F24;
+  --theme-text-rgb: 26, 31, 36;
+  --theme-text-secondary: #3D4449;
+  --theme-text-tertiary: #5A6169;
+  
+  /* Borders */
+  --theme-border: #D1D5DB;
+  
+  /* Smooth transitions */
+  --theme-transition: all 0.3s ease;
+}
+
+/* Warm Terracotta Theme */
+[data-theme='terracotta'] {
+  --theme-primary: #D97856;
+  --theme-primary-rgb: 217, 120, 86;
+  --theme-accent: #E89B6D;
+  --theme-accent-rgb: 232, 155, 109;
+  
+  /* Backgrounds */
+  --theme-background: #FCF8F5;
+  --theme-background-rgb: 252, 248, 245;
+  --theme-bg-secondary: #F5EDE8;
+  --theme-bg-tertiary: #EFE3DC;
+  
+  /* Text - Much darker for readability */
+  --theme-text: #2A1F1C;
+  --theme-text-rgb: 42, 31, 28;
+  --theme-text-secondary: #4A3935;
+  --theme-text-tertiary: #6B524D;
+  
+  /* Borders */
+  --theme-border: #E5D5CC;
+}
+
+/* Lavender & Mint Theme */
+[data-theme='lavender'] {
+  --theme-primary: #8B7FB8;
+  --theme-primary-rgb: 139, 127, 184;
+  --theme-accent: #6BAA8A;
+  --theme-accent-rgb: 107, 170, 138;
+  
+  /* Backgrounds */
+  --theme-background: #F9F9F9;
+  --theme-background-rgb: 249, 249, 249;
+  --theme-bg-secondary: #F1F1F1;
+  --theme-bg-tertiary: #E9E9E9;
+  
+  /* Text - Much darker for readability */
+  --theme-text: #1F1F1F;
+  --theme-text-rgb: 31, 31, 31;
+  --theme-text-secondary: #3D3D3D;
+  --theme-text-tertiary: #5A5A5A;
+  
+  /* Borders */
+  --theme-border: #D9D9D9;
+}
+
+/* Coastal Mist Theme (explicit) */
+[data-theme='coastal'] {
+  --theme-primary: #5B8DB8;
+  --theme-primary-rgb: 91, 141, 184;
+  --theme-accent: #4A8A86;
+  --theme-accent-rgb: 74, 138, 134;
+  
+  /* Backgrounds */
+  --theme-background: #F0F2F5;
+  --theme-background-rgb: 240, 242, 245;
+  --theme-bg-secondary: #E8EAED;
+  --theme-bg-tertiary: #DFE1E4;
+  
+  /* Text - Much darker for readability */
+  --theme-text: #1A1F24;
+  --theme-text-rgb: 26, 31, 36;
+  --theme-text-secondary: #3D4449;
+  --theme-text-tertiary: #5A6169;
+  
+  /* Borders */
+  --theme-border: #D1D5DB;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
 }
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
-
+/* Apply theme colors globally */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+  transition: var(--theme-transition);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
@@ -26,5 +112,59 @@ body {
 * {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition-duration: 300ms;
+}
+
+/* Focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--theme-primary);
+  outline-offset: 2px;
+}
+
+/* Utility classes for theme colors */
+@layer utilities {
+  .bg-theme-primary {
+    background-color: var(--theme-primary);
+  }
+  
+  .bg-theme-accent {
+    background-color: var(--theme-accent);
+  }
+  
+  .bg-theme-bg {
+    background-color: var(--theme-background);
+  }
+  
+  .bg-theme-bg-secondary {
+    background-color: var(--theme-bg-secondary);
+  }
+  
+  .bg-theme-bg-tertiary {
+    background-color: var(--theme-bg-tertiary);
+  }
+  
+  .text-theme-primary {
+    color: var(--theme-text);
+  }
+  
+  .text-theme-secondary {
+    color: var(--theme-text-secondary);
+  }
+  
+  .text-theme-tertiary {
+    color: var(--theme-text-tertiary);
+  }
+  
+  .border-theme {
+    border-color: var(--theme-border);
+  }
+  
+  .hover-theme-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .hover-theme-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--theme-text-rgb), 0.1);
+  }
 }

@@ -1,66 +1,49 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/lib/themes/ThemeProvider';
+import { themes } from '@/lib/themes/themes';
 
 export default function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-
-  // useEffect only runs on the client, so now we can safely show the UI
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    // Return a placeholder with the same dimensions to avoid layout shift
-    return (
-      <button
-        className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-        aria-label="Toggle theme"
-      >
-        <div className="w-5 h-5" />
-      </button>
-    );
-  }
+  const { theme, cycleTheme } = useTheme();
+  const currentTheme = themes[theme];
 
   return (
     <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-      aria-label="Toggle theme"
+      onClick={cycleTheme}
+      className="group relative flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 hover:scale-105"
+      style={{
+        borderColor: 'var(--theme-border)',
+        backgroundColor: 'var(--theme-bg-tertiary)',
+        color: 'var(--theme-text)',
+      }}
+      aria-label={`Current theme: ${currentTheme.displayName}. Click to cycle themes.`}
+      title={`Switch theme (Current: ${currentTheme.displayName})`}
     >
-      {theme === 'dark' ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-5 h-5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-          />
-        </svg>
-      ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-5 h-5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
-          />
-        </svg>
-      )}
+      {/* Emoji indicator */}
+      <span className="text-xl" role="img" aria-label={currentTheme.displayName}>
+        {currentTheme.emoji}
+      </span>
+
+      {/* Theme name (hidden on mobile) */}
+      <span className="hidden sm:inline text-sm font-medium">
+        {currentTheme.displayName}
+      </span>
+
+      {/* Hover tooltip */}
+      <div
+        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50"
+        style={{
+          backgroundColor: 'var(--theme-text)',
+          color: 'var(--theme-background)',
+        }}
+      >
+        <div className="text-xs font-medium">{currentTheme.displayName}</div>
+        <div className="text-xs opacity-80">{currentTheme.description}</div>
+        <div
+          className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-4 border-transparent"
+          style={{ borderTopColor: 'var(--theme-text)' }}
+        />
+      </div>
     </button>
   );
 }

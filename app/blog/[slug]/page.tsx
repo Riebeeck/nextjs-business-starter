@@ -47,14 +47,20 @@ export default async function BlogPost({ params }: PageProps) {
   }
 
   return (
-    <article className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="max-w-3xl mx-auto">
+    <article style={{ backgroundColor: 'var(--theme-background)' }}>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Header */}
         <header className="mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1
+            className="text-3xl md:text-4xl font-semibold mb-4"
+            style={{ color: 'var(--theme-text)' }}
+          >
             {post.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400">
+          <div
+            className="flex flex-wrap items-center gap-4"
+            style={{ color: 'var(--theme-text-secondary)' }}
+          >
             <time>
               {new Date(post.date).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -70,7 +76,11 @@ export default async function BlogPost({ params }: PageProps) {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded"
+                  className="text-xs px-2.5 py-0.5 rounded-md"
+                  style={{
+                    backgroundColor: 'var(--theme-bg-secondary)',
+                    color: 'var(--theme-text-secondary)',
+                  }}
                 >
                   {tag}
                 </span>
@@ -80,7 +90,7 @@ export default async function BlogPost({ params }: PageProps) {
         </header>
 
         {/* Content */}
-        <div className="prose prose-lg dark:prose-invert max-w-none">
+        <div className="prose prose-lg max-w-none">
           <MDXRemote source={post.content} components={mdxComponents} />
         </div>
       </div>

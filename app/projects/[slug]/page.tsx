@@ -46,14 +46,22 @@ export default async function ProjectPage({ params }: PageProps) {
   }
 
   return (
-    <article className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="max-w-4xl mx-auto">
+    <article style={{ backgroundColor: 'var(--theme-background)' }}>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Header */}
         <header className="mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1
+            className="text-3xl md:text-4xl font-semibold mb-4"
+            style={{ color: 'var(--theme-text)' }}
+          >
             {project.title}
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">{project.summary}</p>
+          <p
+            className="text-lg mb-6"
+            style={{ color: 'var(--theme-text-secondary)' }}
+          >
+            {project.summary}
+          </p>
           
           {/* Technologies */}
           {project.technologies && project.technologies.length > 0 && (
@@ -61,7 +69,11 @@ export default async function ProjectPage({ params }: PageProps) {
               {project.technologies.map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg font-medium"
+                  className="px-3 py-1 rounded-md font-medium text-sm"
+                  style={{
+                    backgroundColor: `rgba(var(--theme-primary-rgb), 0.1)`,
+                    color: 'var(--theme-primary)',
+                  }}
                 >
                   {tech}
                 </span>
@@ -76,7 +88,11 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all hover:opacity-90"
+                style={{
+                  backgroundColor: 'var(--theme-text)',
+                  color: 'var(--theme-background)',
+                }}
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path
@@ -93,7 +109,11 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all hover:opacity-90"
+                style={{
+                  backgroundColor: 'var(--theme-primary)',
+                  color: 'var(--theme-text)',
+                }}
               >
                 <svg
                   className="w-5 h-5"
@@ -115,15 +135,19 @@ export default async function ProjectPage({ params }: PageProps) {
         </header>
 
         {/* Content */}
-        <div className="prose prose-lg dark:prose-invert max-w-none">
+        <div className="prose prose-lg max-w-none">
           <MDXRemote source={project.content} components={mdxComponents} />
         </div>
 
         {/* Back Link */}
-        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+        <div
+          className="mt-12 pt-8 border-t"
+          style={{ borderColor: 'var(--theme-border)' }}
+        >
           <Link
             href="/projects"
-            className="text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+            className="font-medium hover:underline"
+            style={{ color: 'var(--theme-primary)' }}
           >
             ← Back to all projects
           </Link>

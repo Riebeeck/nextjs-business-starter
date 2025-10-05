@@ -1,7 +1,30 @@
+'use client';
+
 import Link from 'next/link';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    products: [
+      { name: 'Projects', href: '/projects' },
+      { name: 'Case Studies', href: '/case-studies' },
+    ],
+    solutions: [
+      { name: 'Data Engineering', href: '/solutions/data-engineering' },
+      { name: 'Machine Learning', href: '/solutions/machine-learning' },
+      { name: 'Analytics', href: '/solutions/analytics' },
+    ],
+    resources: [
+      { name: 'Blog', href: '/blog' },
+      { name: 'Documentation', href: '/developers' },
+    ],
+    company: [
+      { name: 'About', href: '/company' },
+      { name: 'Team', href: '/company#team' },
+      { name: 'Contact', href: '/contact' },
+    ],
+  };
 
   const socialLinks = [
     {
@@ -9,7 +32,7 @@ export default function Footer() {
       href: 'https://github.com/Riebeeck',
       icon: (
         <svg
-          className="h-6 w-6"
+          className="h-5 w-5"
           fill="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"
@@ -27,7 +50,7 @@ export default function Footer() {
       href: 'https://www.linkedin.com/in/riebeeckvanniekerk/',
       icon: (
         <svg
-          className="h-6 w-6"
+          className="h-5 w-5"
           fill="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"
@@ -38,10 +61,10 @@ export default function Footer() {
     },
     {
       name: 'X (Twitter)',
-      href: 'https://twitter.com/riebeeck',
+      href: 'https://x.com',
       icon: (
         <svg
-          className="h-6 w-6"
+          className="h-5 w-5"
           fill="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"
@@ -53,28 +76,148 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          {/* Copyright */}
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            © {currentYear} Riebeeck van Niekerk. All rights reserved.
-          </p>
+    <footer
+      className="border-t transition-all"
+      style={{
+        backgroundColor: 'var(--theme-bg-secondary)',
+        borderColor: 'var(--theme-border)',
+      }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Main footer content */}
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:gap-12 mb-8">
+          {/* Products */}
+          <div>
+            <h3
+              className="text-sm font-semibold mb-4"
+              style={{ color: 'var(--theme-text)' }}
+            >
+              Products
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.products.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:opacity-80"
+                    style={{ color: 'var(--theme-text-secondary)' }}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          {/* Social Links */}
-          <div className="flex gap-6">
-            {socialLinks.map((item) => (
+          {/* Solutions */}
+          <div>
+            <h3
+              className="text-sm font-semibold mb-4"
+              style={{ color: 'var(--theme-text)' }}
+            >
+              Solutions
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.solutions.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:opacity-80"
+                    style={{ color: 'var(--theme-text-secondary)' }}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3
+              className="text-sm font-semibold mb-4"
+              style={{ color: 'var(--theme-text)' }}
+            >
+              Resources
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.resources.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:opacity-80"
+                    style={{ color: 'var(--theme-text-secondary)' }}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3
+              className="text-sm font-semibold mb-4"
+              style={{ color: 'var(--theme-text)' }}
+            >
+              Company
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.company.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:opacity-80"
+                    style={{ color: 'var(--theme-text-secondary)' }}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom section */}
+        <div
+          className="border-t pt-8"
+          style={{ borderColor: 'var(--theme-border)' }}
+        >
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            {/* Logo and copyright */}
+            <div className="flex flex-col items-center md:items-start gap-2">
               <Link
-                key={item.name}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition-colors"
-                aria-label={item.name}
+                href="/"
+                className="text-lg font-semibold"
+                style={{ color: 'var(--theme-text)' }}
               >
-                {item.icon}
+                Studio
               </Link>
-            ))}
+              <p
+                className="text-sm"
+                style={{ color: 'var(--theme-text-secondary)' }}
+              >
+                © {currentYear} Riebeeck van Niekerk. All rights reserved.
+              </p>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex gap-4">
+              {socialLinks.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:opacity-80"
+                  style={{ color: 'var(--theme-text-secondary)' }}
+                  aria-label={item.name}
+                >
+                  {item.icon}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>

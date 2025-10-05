@@ -33,6 +33,9 @@ Run these instruction files in sequence:
 4. **04_page_implementation** - Create all pages (home, about, blog, projects)
 5. **05_polish_optimization** - Design overhaul, SEO, performance, e-commerce prep
 6. **06_git_setup** - Initialize Git and push to GitHub (@Riebeeck/core_web)
+7. **08_design_system_overhaul** - LlamaIndex-inspired redesign with proper contrast
+8. **09_three_theme_system** - Implement 5 themes: Coastal Mist, Warm Terracotta, Lavender & Mint, Desert Bloom, Morning Dew
+9. **10_projects_showcase_refinement** - Databricks-inspired project repository with placeholders
 
 **Reference**: **07_design_guidelines** - Visual standards and design patterns (reference throughout)
 
