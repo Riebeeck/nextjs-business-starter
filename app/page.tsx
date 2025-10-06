@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getAllBlogPosts, getAllProjects } from '@/lib/content';
+import VideoHeroSection from '@/components/ui/VideoHeroSection';
 
 export default async function Home() {
   const posts = await getAllBlogPosts();
@@ -10,54 +11,56 @@ export default async function Home() {
 
   return (
     <div style={{ backgroundColor: 'var(--theme-background)' }}>
-      {/* Hero Section with subtle gradient */}
-      <section className="relative py-20 md:py-32 lg:py-40 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-30"
+      {/* Hero Section with background video */}
+      <VideoHeroSection
+        videoSrc="/videos/backgrounds/lattice_medium.mp4"
+        overlayOpacity={0.45}
+        showOnMobile={true}
+      >
+        <h1
+          className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 max-w-4xl mx-auto leading-tight"
           style={{
-            background: `linear-gradient(135deg, rgba(var(--theme-primary-rgb), 0.1) 0%, rgba(var(--theme-background-rgb), 1) 50%, rgba(var(--theme-accent-rgb), 0.1) 100%)`,
+            color: 'var(--theme-text)',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
           }}
-        />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1
-            className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 max-w-4xl mx-auto leading-tight"
-            style={{ color: 'var(--theme-text)' }}
-          >
-            Building digital products with clean code and thoughtful design
-          </h1>
-          <p
-            className="text-lg mb-10 max-w-2xl mx-auto"
-            style={{ color: 'var(--theme-text-secondary)' }}
-          >
-            Scalable solutions for data engineering, machine learning, and modern web development.
-          </p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <Link href="/projects">
-              <button
-                className="px-6 py-3 rounded-md font-medium transition-all hover:opacity-90"
-                style={{
-                  backgroundColor: 'var(--theme-primary)',
-                  color: 'var(--theme-text)',
-                }}
-              >
-                View Work
-              </button>
-            </Link>
-            <Link href="/blog">
-              <button
-                className="px-6 py-3 rounded-md font-medium transition-all border"
-                style={{
-                  backgroundColor: 'var(--theme-bg-tertiary)',
-                  borderColor: 'var(--theme-border)',
-                  color: 'var(--theme-text)',
-                }}
-              >
-                Read Articles
-              </button>
-            </Link>
-          </div>
+        >
+          Building digital products with clean code and thoughtful design
+        </h1>
+        <p
+          className="text-lg mb-10 max-w-2xl mx-auto"
+          style={{
+            color: 'var(--theme-text-secondary)',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+          }}
+        >
+          Scalable solutions for data engineering, machine learning, and modern web development.
+        </p>
+        <div className="flex gap-4 justify-center flex-wrap">
+          <Link href="/projects">
+            <button
+              className="px-6 py-3 rounded-md font-medium transition-all hover:opacity-90 hover:scale-105"
+              style={{
+                backgroundColor: 'var(--theme-primary)',
+                color: 'var(--theme-text)',
+              }}
+            >
+              View Work
+            </button>
+          </Link>
+          <Link href="/blog">
+            <button
+              className="px-6 py-3 rounded-md font-medium transition-all border backdrop-blur-sm"
+              style={{
+                backgroundColor: 'rgba(var(--theme-bg-tertiary-rgb), 0.8)',
+                borderColor: 'var(--theme-border)',
+                color: 'var(--theme-text)',
+              }}
+            >
+              Read Articles
+            </button>
+          </Link>
         </div>
-      </section>
+      </VideoHeroSection>
 
       {/* Recent Posts */}
       <section

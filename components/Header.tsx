@@ -63,7 +63,7 @@ export default function Header() {
         {
           name: 'Team',
           href: '/company#team',
-          description: 'Meet the people behind Studio',
+          description: 'Meet the people behind LatticeHouse',
         },
       ],
     },
@@ -85,7 +85,7 @@ export default function Header() {
               <div className="relative w-8 h-8 sm:w-10 sm:h-10">
                 <Image
                   src="/images/logos/lattice-house-logo.svg"
-                  alt="LatticeWorx"
+                  alt="LatticeHouse"
                   fill
                   priority
                   className="object-contain"

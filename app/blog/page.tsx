@@ -23,7 +23,7 @@ export default async function Blog() {
             Blog
           </h1>
           <p className="text-lg" style={{ color: 'var(--theme-text-secondary)' }}>
-            Thoughts on web development, best practices, and lessons learned.
+            Ideas and insights on software development, technology, and modern development practices.
           </p>
         </div>
 
