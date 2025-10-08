@@ -1,8 +1,13 @@
 # Next.js Business Starter Template
 
-A modern, production-ready Next.js 15 starter template for building professional portfolios, blogs, and business websites. Features TypeScript, Tailwind CSS, MDX content management, and a powerful multi-theme system.
+> A modern, production-ready Next.js 15 starter template for building professional portfolios, blogs, and business websites.
 
-## Features
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+
+## ✨ Features
 
 - **Next.js 15 App Router** - Modern React framework with latest features
 - **TypeScript** - Full type safety with strict mode
@@ -22,7 +27,7 @@ A modern, production-ready Next.js 15 starter template for building professional
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/nextjs-business-starter.git
+git clone https://github.com/Riebeeck/nextjs-business-starter.git
 cd nextjs-business-starter
 
 # Install dependencies

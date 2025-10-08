@@ -1,0 +1,36 @@
+GitHub Repository Topics/Tags to Add:
+==========================================
+
+Copy these topics and add them to your GitHub repository:
+(GitHub → Settings → Topics → Add topics)
+
+nextjs
+nextjs-15
+typescript
+tailwind-css
+tailwindcss
+starter-template
+template
+portfolio
+blog
+mdx
+react
+app-router
+dark-mode
+seo
+responsive
+business-website
+personal-website
+starter-kit
+boilerplate
+modern-web
+
+==========================================
+
+How to Add Topics:
+1. Go to: https://github.com/Riebeeck/nextjs-business-starter
+2. Click the ⚙️ gear icon next to "About"
+3. Add the topics above (separated by spaces or commas)
+4. Add description: "A modern, production-ready Next.js 15 starter template for portfolios, blogs, and business websites"
+5. Click "Save changes"
+
