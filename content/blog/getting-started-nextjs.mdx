@@ -1,0 +1,208 @@
+---
+title: "Getting Started with Next.js 15"
+date: "2025-01-10"
+summary: "A beginner's guide to building modern web applications with Next.js and the App Router"
+author: "Your Name"
+tags: ["nextjs", "tutorial", "react", "web-development"]
+---
+
+# Getting Started with Next.js 15
+
+Next.js has become one of the most popular React frameworks for building modern web applications. This guide will help you understand the basics and get started with Next.js 15 and the App Router.
+
+## What is Next.js?
+
+Next.js is a React framework that provides a robust set of features for building production-ready web applications:
+
+- **Server-Side Rendering (SSR)** - Render pages on the server for better SEO and performance
+- **Static Site Generation (SSG)** - Pre-render pages at build time
+- **API Routes** - Build your backend alongside your frontend
+- **File-based Routing** - Automatic routing based on your file structure
+- **Image Optimization** - Automatic image optimization out of the box
+
+## The App Router
+
+Next.js 15 introduces the App Router, a new way to structure your application:
+
+```
+app/
+├── layout.tsx      # Root layout
+├── page.tsx        # Home page
+├── about/
+│   └── page.tsx    # /about route
+└── blog/
+    ├── page.tsx    # /blog route
+    └── [slug]/
+        └── page.tsx # /blog/:slug route
+```
+
+### Server Components vs Client Components
+
+By default, all components in the App Router are Server Components. This means they render on the server, reducing the JavaScript sent to the client.
+
+**Server Component:**
+```tsx
+// No "use client" directive needed
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug); // Direct data fetching
+  
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </article>
+  );
+}
+```
+
+**Client Component:**
+```tsx
+"use client"; // Required for interactivity
+
+import { useState } from "react";
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+## Data Fetching
+
+Next.js 15 makes data fetching simple with async Server Components:
+
+```tsx
+async function getData() {
+  const res = await fetch('https://api.example.com/data');
+  return res.json();
+}
+
+export default async function Page() {
+  const data = await getData();
+  
+  return <div>{data.title}</div>;
+}
+```
+
+## Routing
+
+### Static Routes
+
+Create a `page.tsx` file in any directory:
+
+```
+app/
+├── page.tsx          → /
+├── about/page.tsx    → /about
+└── contact/page.tsx  → /contact
+```
+
+### Dynamic Routes
+
+Use square brackets for dynamic segments:
+
+```
+app/
+└── blog/
+    └── [slug]/
+        └── page.tsx  → /blog/:slug
+```
+
+```tsx
+export default function BlogPost({ params }: { params: { slug: string } }) {
+  return <h1>Post: {params.slug}</h1>;
+}
+```
+
+## Layouts
+
+Layouts wrap multiple pages and persist across navigation:
+
+```tsx
+// app/layout.tsx
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <header>My Site</header>
+        <main>{children}</main>
+        <footer>© 2025</footer>
+      </body>
+    </html>
+  );
+}
+```
+
+## Metadata
+
+Add SEO-friendly metadata to your pages:
+
+```tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Page Title',
+  description: 'My page description',
+  openGraph: {
+    title: 'My Page Title',
+    description: 'My page description',
+  },
+};
+```
+
+## Loading States
+
+Create loading UI with `loading.tsx`:
+
+```tsx
+// app/blog/loading.tsx
+export default function Loading() {
+  return <div>Loading blog posts...</div>;
+}
+```
+
+## Error Handling
+
+Handle errors gracefully with `error.tsx`:
+
+```tsx
+'use client'; // Error components must be Client Components
+
+export default function Error({ error, reset }: { 
+  error: Error; 
+  reset: () => void 
+}) {
+  return (
+    <div>
+      <h2>Something went wrong!</h2>
+      <button onClick={() => reset()}>Try again</button>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+1. **Use Server Components by default** - Only use Client Components when you need interactivity
+2. **Optimize Images** - Always use the `next/image` component
+3. **Implement proper loading states** - Use `loading.tsx` files
+4. **Add error boundaries** - Create `error.tsx` files for better UX
+5. **Leverage TypeScript** - Use strict typing for better code quality
+
+## Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [React Documentation](https://react.dev)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs)
+
+## Conclusion
+
+Next.js 15 with the App Router provides a powerful foundation for building modern web applications. Start with Server Components, add Client Components when needed, and leverage the framework's built-in features for optimal performance.
+
+This template is a great starting point for your Next.js journey. Customize it, extend it, and make it your own!
+

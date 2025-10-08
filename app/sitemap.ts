@@ -2,7 +2,9 @@ import { MetadataRoute } from 'next';
 import { getAllBlogPosts, getAllProjects } from '@/lib/content';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://studio.example.com'; // TODO: Update with actual domain
+  // TODO: Update this URL with your actual domain before deploying
+  // Example: const baseUrl = 'https://yourdomain.com';
+  const baseUrl = 'https://yourdomain.com';
 
   const posts = await getAllBlogPosts();
   const projects = await getAllProjects();
@@ -47,22 +49,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/developers`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/case-studies`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
     },
     ...blogPosts,
     ...projectPages,

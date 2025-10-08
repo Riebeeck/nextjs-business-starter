@@ -8,16 +8,7 @@ export default function Footer() {
   const footerLinks = {
     products: [
       { name: 'Projects', href: '/projects' },
-      { name: 'Case Studies', href: '/case-studies' },
-    ],
-    solutions: [
-      { name: 'Data Engineering', href: '/solutions/data-engineering' },
-      { name: 'Machine Learning', href: '/solutions/machine-learning' },
-      { name: 'Analytics', href: '/solutions/analytics' },
-    ],
-    resources: [
       { name: 'Blog', href: '/blog' },
-      { name: 'Documentation', href: '/developers' },
     ],
     company: [
       { name: 'About', href: '/company' },
@@ -29,7 +20,7 @@ export default function Footer() {
   const socialLinks = [
     {
       name: 'GitHub',
-      href: 'https://github.com/Riebeeck',
+      href: 'https://github.com/yourusername',
       icon: (
         <svg
           className="h-5 w-5"
@@ -47,7 +38,7 @@ export default function Footer() {
     },
     {
       name: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/riebeeckvanniekerk/',
+      href: 'https://linkedin.com/company/yourcompany',
       icon: (
         <svg
           className="h-5 w-5"
@@ -61,7 +52,7 @@ export default function Footer() {
     },
     {
       name: 'X (Twitter)',
-      href: 'https://x.com',
+      href: 'https://twitter.com/yourcompany',
       icon: (
         <svg
           className="h-5 w-5"
@@ -85,7 +76,7 @@ export default function Footer() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main footer content */}
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:gap-12 mb-8">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-2 lg:gap-12 mb-8">
           {/* Products */}
           <div>
             <h3
@@ -96,52 +87,6 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               {footerLinks.products.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-sm transition-colors hover:opacity-80"
-                    style={{ color: 'var(--theme-text-secondary)' }}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Solutions */}
-          <div>
-            <h3
-              className="text-sm font-semibold mb-4"
-              style={{ color: 'var(--theme-text)' }}
-            >
-              Solutions
-            </h3>
-            <ul className="space-y-3">
-              {footerLinks.solutions.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-sm transition-colors hover:opacity-80"
-                    style={{ color: 'var(--theme-text-secondary)' }}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h3
-              className="text-sm font-semibold mb-4"
-              style={{ color: 'var(--theme-text)' }}
-            >
-              Resources
-            </h3>
-            <ul className="space-y-3">
-              {footerLinks.resources.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -192,13 +137,13 @@ export default function Footer() {
                 className="text-lg font-semibold"
                 style={{ color: 'var(--theme-text)' }}
               >
-                Studio
+                YourCompany
               </Link>
               <p
                 className="text-sm"
                 style={{ color: 'var(--theme-text-secondary)' }}
               >
-                © {currentYear} Riebeeck van Niekerk. All rights reserved.
+                © {currentYear} YourCompany. All rights reserved.
               </p>
             </div>
 

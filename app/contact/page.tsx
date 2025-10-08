@@ -31,23 +31,21 @@ export default function Contact() {
           >
             Contact form coming soon. For now, reach out via{' '}
             <a
-              href="https://www.linkedin.com/in/riebeeckvanniekerk/"
+              href="mailto:hello@yourcompany.com"
+              className="hover:underline"
+              style={{ color: 'var(--theme-primary)' }}
+            >
+              email
+            </a>
+            {' '}or connect with us on{' '}
+            <a
+              href="https://linkedin.com/company/yourcompany"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline"
               style={{ color: 'var(--theme-primary)' }}
             >
               LinkedIn
-            </a>{' '}
-            or{' '}
-            <a
-              href="https://github.com/Riebeeck"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline"
-              style={{ color: 'var(--theme-primary)' }}
-            >
-              GitHub
             </a>
             .
           </p>

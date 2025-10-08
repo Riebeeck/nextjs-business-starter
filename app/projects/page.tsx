@@ -1,13 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import type { Metadata } from 'next';
-import { projects, projectCategories, getProjectsByCategory } from '@/lib/projects';
+import { projectCategories, getProjectsByCategory } from '@/lib/projects';
 import ProjectCard from './components/ProjectCard';
 import EmptyState from './components/EmptyState';
 
 export default function ProjectsPage() {
-  const [activeTab, setActiveTab] = useState<keyof typeof projectCategories>('ai');
+  const [activeTab, setActiveTab] = useState<keyof typeof projectCategories>('web');
 
   const categoryProjects = getProjectsByCategory(activeTab);
   const category = projectCategories[activeTab];

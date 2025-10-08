@@ -30,7 +30,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
         title: data.title || '',
         date: data.date || '',
         summary: data.summary || '',
-        author: data.author || 'Riebeeck van Niekerk',
+        author: data.author || 'Your Name',
         tags: data.tags || [],
         image: data.image,
         content,

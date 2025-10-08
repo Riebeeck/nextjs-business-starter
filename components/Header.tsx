@@ -9,48 +9,6 @@ import Dropdown, { DropdownSection } from './ui/Dropdown';
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Solutions dropdown
-  const solutionsItems: DropdownSection[] = [
-    {
-      title: 'Use Cases',
-      items: [
-        {
-          name: 'Data Engineering',
-          href: '/solutions/data-engineering',
-          description: 'Scalable data pipelines and orchestration',
-        },
-        {
-          name: 'Machine Learning',
-          href: '/solutions/machine-learning',
-          description: 'ML model training and deployment',
-        },
-        {
-          name: 'Analytics',
-          href: '/solutions/analytics',
-          description: 'Business intelligence and reporting',
-        },
-      ],
-    },
-  ];
-
-  // Resources dropdown
-  const resourcesItems: DropdownSection[] = [
-    {
-      items: [
-        {
-          name: 'Blog',
-          href: '/blog',
-          description: 'Technical articles and insights',
-        },
-        {
-          name: 'Case Studies',
-          href: '/case-studies',
-          description: 'Real-world project examples',
-        },
-      ],
-    },
-  ];
-
   // Company dropdown
   const companyItems: DropdownSection[] = [
     {
@@ -63,7 +21,7 @@ export default function Header() {
         {
           name: 'Team',
           href: '/company#team',
-          description: 'Meet the people behind LatticeHouse',
+          description: 'Meet the people behind the company',
         },
       ],
     },
@@ -84,8 +42,8 @@ export default function Header() {
             <Link href="/" className="flex items-center gap-3 -m-1.5 p-1.5 transition-opacity hover:opacity-80">
               <div className="relative w-8 h-8 sm:w-10 sm:h-10">
                 <Image
-                  src="/images/logos/lattice-house-logo.svg"
-                  alt="LatticeHouse"
+                  src="/images/logos/company-logo.svg"
+                  alt="YourCompany"
                   fill
                   priority
                   className="object-contain"
@@ -95,7 +53,7 @@ export default function Header() {
                 className="text-lg sm:text-xl font-semibold transition-colors"
                 style={{ color: 'var(--theme-text)' }}
               >
-                LatticeHouse
+                YourCompany
               </span>
             </Link>
           </div>
@@ -109,15 +67,13 @@ export default function Header() {
             >
               Projects
             </Link>
-            <Dropdown title="Solutions" sections={solutionsItems} />
             <Link
-              href="/developers"
+              href="/blog"
               className="text-sm font-medium transition-colors hover:opacity-80"
               style={{ color: 'var(--theme-text-secondary)' }}
             >
-              Developers
+              Blog
             </Link>
-            <Dropdown title="Resources" sections={resourcesItems} />
             <Dropdown title="Company" sections={companyItems} />
           </div>
 
@@ -198,56 +154,14 @@ export default function Header() {
                 Projects
               </Link>
               
-              {/* Solutions section */}
-              <div className="px-3 py-2">
-                <div
-                  className="text-xs font-semibold uppercase tracking-wider mb-2"
-                  style={{ color: 'var(--theme-text-tertiary)' }}
-                >
-                  Solutions
-                </div>
-                {solutionsItems[0].items.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="block px-3 py-2 text-sm rounded-md transition-colors hover:opacity-80"
-                    style={{ color: 'var(--theme-text-secondary)' }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-
               <Link
-                href="/developers"
+                href="/blog"
                 className="block px-3 py-2 text-base font-medium rounded-md transition-colors hover:opacity-80"
                 style={{ color: 'var(--theme-text)' }}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Developers
+                Blog
               </Link>
-
-              {/* Resources section */}
-              <div className="px-3 py-2">
-                <div
-                  className="text-xs font-semibold uppercase tracking-wider mb-2"
-                  style={{ color: 'var(--theme-text-tertiary)' }}
-                >
-                  Resources
-                </div>
-                {resourcesItems[0].items.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="block px-3 py-2 text-sm rounded-md transition-colors hover:opacity-80"
-                    style={{ color: 'var(--theme-text-secondary)' }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
 
               {/* Company section */}
               <div className="px-3 py-2">

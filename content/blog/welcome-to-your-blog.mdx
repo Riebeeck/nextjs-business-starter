@@ -1,0 +1,116 @@
+---
+title: "Welcome to Your Blog"
+date: "2025-01-15"
+summary: "Getting started with your new Next.js blog powered by MDX"
+author: "Your Name"
+tags: ["welcome", "getting-started", "blogging"]
+---
+
+# Welcome to Your Blog
+
+This is an example blog post to help you get started with your new Next.js blog. Feel free to delete this post and create your own content.
+
+## What is MDX?
+
+MDX is a powerful format that lets you write JSX in your Markdown documents. This means you can import and use React components directly in your blog posts, making them interactive and dynamic.
+
+```jsx
+import { CustomComponent } from '@/components/CustomComponent';
+
+<CustomComponent prop="value" />
+```
+
+## Getting Started
+
+To create a new blog post:
+
+1. Create a new `.mdx` file in the `content/blog/` directory
+2. Add frontmatter with title, date, summary, author, and tags
+3. Write your content using Markdown
+4. Use React components when needed for interactivity
+
+### Frontmatter Example
+
+```yaml
+---
+title: "Your Post Title"
+date: "2025-01-15"
+summary: "A brief description of your post"
+author: "Your Name"
+tags: ["tag1", "tag2", "tag3"]
+---
+```
+
+## Markdown Features
+
+You have access to all standard Markdown features:
+
+- **Bold text**
+- *Italic text*
+- [Links](https://example.com)
+- `Inline code`
+- Code blocks with syntax highlighting
+
+### Images
+
+Add images using standard Markdown syntax:
+
+```markdown
+![Alt text](/images/blog/your-image.jpg)
+```
+
+### Lists
+
+Ordered lists:
+1. First item
+2. Second item
+3. Third item
+
+Unordered lists:
+- Item one
+- Item two
+- Item three
+
+## Code Syntax Highlighting
+
+This template uses Shiki for beautiful syntax highlighting:
+
+```typescript
+interface BlogPost {
+  title: string;
+  date: string;
+  summary: string;
+  author: string;
+  tags: string[];
+}
+
+export async function getBlogPost(slug: string): Promise<BlogPost> {
+  const post = await fetch(`/api/posts/${slug}`);
+  return post.json();
+}
+```
+
+```python
+def hello_world():
+    """A simple Python function"""
+    print("Hello, World!")
+    return True
+```
+
+## Next Steps
+
+1. **Delete this example post** - Remove this file when you're ready
+2. **Create your own content** - Write about topics you're passionate about
+3. **Customize the design** - Adjust styles in the theme system
+4. **Add more features** - Extend the blog with comments, search, etc.
+
+## Need Help?
+
+Check out the documentation in the README for more information on:
+- Content management
+- Styling and themes
+- Adding custom components
+- Deployment options
+
+Happy blogging!
+

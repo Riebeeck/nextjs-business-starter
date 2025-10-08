@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# development and instruction files
+/instructions/
+/completed/
+/guides/
+
+# template conversion artifacts
+TEMPLATE_CONVERSION_PROMPT.md
+CURSOR_EXECUTION_PROMPT.md
+CONVERSION_CHECKLIST.md
+CONVERSION_SUMMARY.md
+START_HERE.md
+QUICK_PROMPT.txt
+PROMPT_DESIGN_COMPLETE.md

@@ -1,7 +1,9 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://studio.example.com'; // TODO: Update with actual domain
+  // TODO: Update this URL with your actual domain before deploying
+  // Example: const baseUrl = 'https://yourdomain.com';
+  const baseUrl = 'https://yourdomain.com';
 
   return {
     rules: {

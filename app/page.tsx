@@ -24,7 +24,7 @@ export default async function Home() {
             textShadow: '0 2px 4px rgba(0,0,0,0.3)',
           }}
         >
-          Building digital products with clean code and thoughtful design
+          Build Your Digital Presence with Modern Web Technologies
         </h1>
         <p
           className="text-lg mb-10 max-w-2xl mx-auto"
@@ -33,7 +33,7 @@ export default async function Home() {
             textShadow: '0 2px 4px rgba(0,0,0,0.3)',
           }}
         >
-          Scalable solutions for data engineering, machine learning, and modern web development.
+          A production-ready Next.js 15 starter template for portfolios, blogs, and business websites. Built with TypeScript, Tailwind CSS, and MDX.
         </p>
         <div className="flex gap-4 justify-center flex-wrap">
           <Link href="/projects">

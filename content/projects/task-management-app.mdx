@@ -1,286 +1,330 @@
 ---
 title: "Task Management Application"
-date: "2025-08-20"
-summary: "A full-stack task management application with real-time collaboration, built with Next.js, PostgreSQL, and Prisma."
-description: "A comprehensive task management solution featuring real-time updates, team collaboration, and advanced filtering. Built with modern web technologies and deployed on Vercel."
-technologies: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Tailwind CSS", "NextAuth.js", "Vercel", "devops"]
-github: "https://github.com/Riebeeck/task-manager"
-demo: "https://tasks.riebeeck.dev"
-image: "/images/projects/task-manager.jpg"
+date: "2024-11-20"
+summary: "Collaborative task management tool with real-time updates and team features"
+description: "Built a modern task management application with real-time collaboration, drag-and-drop interface, and team workspaces"
+technologies: ["React", "TypeScript", "Firebase", "Tailwind CSS", "DnD Kit"]
+github: "https://github.com/yourusername/task-app"
+demo: "https://task-app-demo.vercel.app"
 ---
 
 # Task Management Application
 
-A powerful, real-time task management application designed for teams and individuals to organize their work efficiently.
+A modern, collaborative task management tool that helps teams organize work, track progress, and achieve goals together.
 
 ## Project Overview
 
-This full-stack application provides a comprehensive solution for task management with features like real-time collaboration, advanced filtering, and team management. It's built with a focus on performance, user experience, and scalability.
+This application was built to provide teams with an intuitive way to manage tasks, projects, and workflows. It combines the simplicity of traditional to-do lists with powerful collaboration features.
 
-## Key Features
+### Core Features
 
-### Core Functionality
+- **Task Organization** - Create, edit, and organize tasks
+- **Drag & Drop** - Intuitive task movement between lists
+- **Real-Time Collaboration** - See updates instantly
+- **Team Workspaces** - Multiple projects and teams
+- **Assignments** - Assign tasks to team members
+- **Due Dates** - Track deadlines and priorities
+- **File Attachments** - Attach files to tasks
+- **Comments** - Discuss tasks with the team
+- **Activity Log** - Track all changes
 
-- **Task Management** - Create, edit, delete, and organize tasks
-- **Real-time Updates** - See changes instantly across all devices
-- **Team Collaboration** - Invite team members and assign tasks
-- **Priority Levels** - Organize tasks by urgency (High, Medium, Low)
-- **Due Dates** - Set deadlines and get reminders
-- **Tags and Labels** - Categorize tasks for easy filtering
-- **Search and Filter** - Find tasks quickly with advanced search
+## User Experience
 
-### User Experience
+### Dashboard View
 
-- **Drag and Drop** - Reorder tasks intuitively
-- **Keyboard Shortcuts** - Power user features for efficiency
-- **Dark Mode** - Easy on the eyes during late-night work
-- **Mobile Responsive** - Full functionality on all devices
-- **Offline Support** - Continue working without internet
+Users see an overview of:
+- Tasks assigned to them
+- Upcoming deadlines
+- Recent activity
+- Team workspaces
 
-### Technical Features
+### Board View
 
-- **Authentication** - Secure login with NextAuth.js
-- **Database** - PostgreSQL with Prisma ORM
-- **API Routes** - RESTful API built with Next.js
-- **Type Safety** - Full TypeScript coverage
-- **Real-time** - WebSocket connections for live updates
+Kanban-style boards with:
+- Customizable columns (To Do, In Progress, Done, etc.)
+- Drag-and-drop task movement
+- Quick task creation
+- Filtering and search
 
-## Architecture
+### Task Details
 
-### Frontend
+Comprehensive task view includes:
+- Title and description
+- Assignee and due date
+- Labels and priority
+- File attachments
+- Comment thread
+- Activity history
 
-Built with Next.js 14 and React, the frontend uses:
+## Technical Implementation
 
-- **Server Components** for initial page loads
-- **Client Components** for interactive features
-- **React Query** for data fetching and caching
-- **Zustand** for client-side state management
-- **Tailwind CSS** for styling
-
-### Backend
-
-The backend leverages Next.js API routes with:
-
-- **Prisma** as the ORM for database operations
-- **PostgreSQL** for data persistence
-- **NextAuth.js** for authentication
-- **Zod** for runtime validation
-- **JWT** for secure token management
-
-### Database Schema
-
-```prisma
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  tasks     Task[]
-  teams     TeamMember[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Task {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  status      Status   @default(TODO)
-  priority    Priority @default(MEDIUM)
-  dueDate     DateTime?
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  tags        Tag[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Team {
-  id        String       @id @default(cuid())
-  name      String
-  members   TeamMember[]
-  createdAt DateTime     @default(now())
-}
-
-enum Status {
-  TODO
-  IN_PROGRESS
-  DONE
-}
-
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-}
-```
-
-## Implementation Highlights
-
-### Real-time Updates
-
-Implemented using Server-Sent Events (SSE) for efficient real-time communication:
+### Real-Time Updates with Firebase
 
 ```typescript
-// app/api/tasks/stream/route.ts
-export async function GET(request: Request) {
-  const encoder = new TextEncoder();
-  
-  const stream = new ReadableStream({
-    async start(controller) {
-      // Subscribe to task updates
-      const subscription = subscribeToTaskUpdates((task) => {
-        const data = encoder.encode(`data: ${JSON.stringify(task)}\n\n`);
-        controller.enqueue(data);
-      });
-      
-      // Cleanup on disconnect
-      request.signal.addEventListener('abort', () => {
-        subscription.unsubscribe();
-        controller.close();
-      });
-    },
-  });
-  
-  return new Response(stream, {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    },
-  });
-}
-```
+import { 
+  collection, 
+  onSnapshot, 
+  query, 
+  where 
+} from 'firebase/firestore';
 
-### Optimistic Updates
+function useTasksRealtime(workspaceId: string) {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
 
-For better UX, changes appear instantly before server confirmation:
-
-```typescript
-const { mutate } = useMutation({
-  mutationFn: updateTask,
-  onMutate: async (newTask) => {
-    // Cancel outgoing refetches
-    await queryClient.cancelQueries({ queryKey: ['tasks'] });
-    
-    // Snapshot previous value
-    const previousTasks = queryClient.getQueryData(['tasks']);
-    
-    // Optimistically update
-    queryClient.setQueryData(['tasks'], (old) => 
-      old.map((task) => task.id === newTask.id ? newTask : task)
+  useEffect(() => {
+    const q = query(
+      collection(db, 'tasks'),
+      where('workspaceId', '==', workspaceId)
     );
-    
-    return { previousTasks };
-  },
-  onError: (err, newTask, context) => {
-    // Rollback on error
-    queryClient.setQueryData(['tasks'], context.previousTasks);
-  },
-  onSettled: () => {
-    // Refetch after mutation
-    queryClient.invalidateQueries({ queryKey: ['tasks'] });
-  },
-});
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const taskData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Task[];
+      
+      setTasks(taskData);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [workspaceId]);
+
+  return { tasks, loading };
+}
 ```
 
-### Advanced Filtering
-
-Implemented with URL search params for shareable filtered views:
+### Drag-and-Drop Implementation
 
 ```typescript
-function TaskList() {
-  const searchParams = useSearchParams();
-  const status = searchParams.get('status');
-  const priority = searchParams.get('priority');
-  const tags = searchParams.getAll('tag');
-  
-  const { data: tasks } = useQuery({
-    queryKey: ['tasks', { status, priority, tags }],
-    queryFn: () => fetchTasks({ status, priority, tags }),
-  });
-  
+import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+
+export default function TaskBoard() {
+  const { tasks } = useTasksRealtime(workspaceId);
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (!over || active.id === over.id) return;
+
+    await updateTaskColumn(active.id, over.id);
+  };
+
   return (
-    <div>
-      <TaskFilters />
-      <TaskGrid tasks={tasks} />
-    </div>
+    <DndContext 
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="flex gap-4">
+        {columns.map(column => (
+          <SortableContext
+            key={column.id}
+            items={tasks.filter(t => t.columnId === column.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <TaskColumn column={column} tasks={tasks} />
+          </SortableContext>
+        ))}
+      </div>
+    </DndContext>
   );
 }
 ```
 
-## Challenges Overcome
+### Optimistic UI Updates
 
-### Challenge 1: Real-time Synchronization
+```typescript
+async function updateTask(taskId: string, updates: Partial<Task>) {
+  // Update UI immediately
+  setTasks(prev => 
+    prev.map(task => 
+      task.id === taskId 
+        ? { ...task, ...updates } 
+        : task
+    )
+  );
 
-**Problem:** Keeping data in sync across multiple clients without overwhelming the server.
+  try {
+    // Update in database
+    await updateDoc(doc(db, 'tasks', taskId), updates);
+  } catch (error) {
+    // Revert on error
+    toast.error('Failed to update task');
+    refetch();
+  }
+}
+```
 
-**Solution:** Implemented debounced updates and intelligent conflict resolution. Used optimistic updates for instant feedback while queuing actual server updates.
+## Architecture Decisions
 
-### Challenge 2: Performance with Large Datasets
+### Why Firebase?
 
-**Problem:** Slow rendering with thousands of tasks.
+**Pros:**
+- Real-time updates out of the box
+- No backend server needed
+- Authentication included
+- Automatic scaling
+- Free tier for development
 
-**Solution:** Implemented virtual scrolling, pagination, and smart caching strategies. Tasks are loaded in batches and rendered only when visible.
+**Cons:**
+- Lock-in to Google ecosystem
+- Complex queries can be expensive
+- Limited query capabilities compared to SQL
 
-### Challenge 3: Offline Functionality
+**Decision:** Firebase was perfect for MVP. Real-time updates were essential and Firebase made them trivial to implement.
 
-**Problem:** Users wanted to work without internet connection.
+### State Management
 
-**Solution:** Implemented service workers for offline support and IndexedDB for local storage. Changes sync automatically when connection is restored.
+Used a combination of:
+- **React Context** - User authentication and workspace selection
+- **React Query** - Server state and caching
+- **Local State** - UI state (modals, forms, etc.)
+
+Avoided Redux because the app didn't need global state management complexity.
+
+## Challenges & Solutions
+
+### Challenge 1: Real-Time Performance
+
+**Problem:** Real-time updates caused excessive re-renders.
+
+**Solution:**
+- Implemented React.memo for task components
+- Used useMemo for expensive calculations
+- Batched Firebase updates
+- Result: 60fps performance with 1000+ tasks
+
+### Challenge 2: Optimistic Updates
+
+**Problem:** Network lag made the UI feel slow.
+
+**Solution:**
+- Implemented optimistic updates
+- Added loading states for network requests
+- Showed undo option for important actions
+- Result: Instant-feeling UI
+
+### Challenge 3: Offline Support
+
+**Problem:** App broke without internet connection.
+
+**Solution:**
+- Enabled Firebase offline persistence
+- Added network status indicator
+- Queued actions while offline
+- Result: Works offline, syncs when back online
+
+## Security & Permissions
+
+### Role-Based Access Control
+
+```typescript
+interface Workspace {
+  id: string;
+  name: string;
+  members: {
+    [userId: string]: 'owner' | 'admin' | 'member';
+  };
+}
+
+function canEditTask(user: User, task: Task, workspace: Workspace): boolean {
+  const role = workspace.members[user.id];
+  
+  // Owners and admins can edit any task
+  if (role === 'owner' || role === 'admin') {
+    return true;
+  }
+  
+  // Members can only edit their assigned tasks
+  return task.assignedTo === user.id;
+}
+```
+
+### Firestore Security Rules
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /tasks/{taskId} {
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/workspaces/$(resource.data.workspaceId)/members/$(request.auth.uid));
+      
+      allow create: if request.auth != null;
+      
+      allow update, delete: if request.auth != null && 
+        (resource.data.assignedTo == request.auth.uid || 
+         get(/databases/$(database)/documents/workspaces/$(resource.data.workspaceId)).data.members[request.auth.uid] in ['owner', 'admin']);
+    }
+  }
+}
+```
 
 ## Testing Strategy
 
-- **Unit Tests:** Jest for utility functions and hooks
-- **Integration Tests:** React Testing Library for components
-- **E2E Tests:** Playwright for critical user flows
-- **API Tests:** Supertest for endpoint testing
-- **Coverage:** Maintained 80%+ code coverage
+1. **Unit Tests** - Jest for utility functions
+2. **Component Tests** - React Testing Library
+3. **Integration Tests** - Firestore emulator
+4. **E2E Tests** - Cypress for critical user flows
+5. **Performance Tests** - Lighthouse CI
 
-## Deployment
+## Deployment & Monitoring
 
-Deployed on Vercel with:
+- **Hosting:** Vercel
+- **Database:** Firebase Firestore
+- **Authentication:** Firebase Auth
+- **File Storage:** Firebase Storage
+- **Analytics:** Google Analytics
+- **Error Tracking:** Sentry
+- **Performance:** Vercel Analytics
 
-- **Automatic deployments** from main branch
-- **Preview deployments** for pull requests
-- **Environment variables** for secrets
-- **PostgreSQL database** on Railway
-- **CDN** for static assets
-- **Analytics** with Vercel Analytics
+## Key Metrics
 
-## Results and Impact
-
-- **Users:** 500+ active users
-- **Tasks Created:** 10,000+ tasks managed
-- **Performance:** 98 Lighthouse score
-- **Uptime:** 99.9% availability
-- **Load Time:** < 1.5s average
+- **Active Users:** 500+ daily
+- **Tasks Created:** 10,000+
+- **Load Time:** < 1.5s
+- **Uptime:** 99.9%
+- **User Satisfaction:** 4.7/5
 
 ## Lessons Learned
 
-1. **Start with a solid schema** - Database design is crucial for scalability
-2. **Optimize early** - Performance issues are harder to fix later
-3. **User feedback is invaluable** - Real users find edge cases you never considered
-4. **Type safety saves time** - TypeScript caught countless bugs before production
-5. **Testing pays off** - Comprehensive tests enabled confident refactoring
+1. **Real-time is hard** - Requires careful optimization
+2. **Optimistic UI is crucial** - Users expect instant feedback
+3. **Start simple** - Added features based on user feedback
+4. **Mobile is important** - 40% of usage on mobile
+5. **Testing saves time** - Caught many bugs before production
 
-## Future Roadmap
+## User Feedback
 
-- [ ] Mobile apps (React Native)
-- [ ] Calendar integration
+> "Finally, a task manager that's actually simple to use!"
+
+> "The real-time updates make collaboration so much easier."
+
+> "Love the drag-and-drop interface!"
+
+## Future Enhancements
+
+- [ ] Calendar view
 - [ ] Time tracking
-- [ ] Gantt chart view
-- [ ] Custom workflows
-- [ ] API for third-party integrations
-- [ ] AI-powered task suggestions
+- [ ] Recurring tasks
+- [ ] Email notifications
+- [ ] API for integrations
+- [ ] Mobile apps (iOS/Android)
+- [ ] Advanced reporting
+- [ ] Custom fields
 
 ## Conclusion
 
-This project taught me the importance of building scalable, user-focused applications. From database design to real-time updates, every aspect required careful consideration and iteration based on user feedback.
+This project demonstrates how modern web technologies can create powerful, real-time collaborative applications. The focus on user experience and performance resulted in a tool that teams actually enjoy using.
+
+## Links
+
+- **Live Demo:** [task-app-demo.vercel.app](https://task-app-demo.vercel.app)
+- **GitHub:** [github.com/yourusername/task-app](https://github.com/yourusername/task-app)
 
 ---
 
-**Tech Stack:** Next.js, TypeScript, PostgreSQL, Prisma, Tailwind CSS, NextAuth.js
+**Note:** This is an example project for the template. Replace with your own projects.
 
-**Links:**
-- [View Source Code](https://github.com/Riebeeck/task-manager)
-- [Live Demo](https://tasks.riebeeck.dev)

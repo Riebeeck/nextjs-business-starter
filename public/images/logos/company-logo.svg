@@ -1,0 +1,7 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simple geometric logo: Overlapping squares forming a modern Y shape -->
+  <rect x="40" y="40" width="50" height="50" rx="8" fill="currentColor" opacity="0.9"/>
+  <rect x="110" y="40" width="50" height="50" rx="8" fill="currentColor" opacity="0.9"/>
+  <rect x="75" y="95" width="50" height="65" rx="8" fill="currentColor"/>
+</svg>
+

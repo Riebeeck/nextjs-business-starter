@@ -3,26 +3,26 @@ import Link from 'next/link';
 import VideoHeroSection from '@/components/ui/VideoHeroSection';
 
 export const metadata: Metadata = {
-  title: 'About Us - LatticeHouse',
+  title: 'About Us',
   description:
-    'Learn about LatticeHouse, our mission to build intelligent data solutions, and the team creating the future of AI-powered analytics.',
+    'Learn about YourCompany, our mission, and the team behind our innovative solutions.',
   openGraph: {
-    title: 'About Us - LatticeHouse',
-    description: 'Building the future of AI-powered analytics and data solutions.',
+    title: 'About Us - YourCompany',
+    description: 'Building innovative solutions for modern businesses.',
   },
 };
 
 export default function Company() {
   const teamMembers = [
     {
-      name: 'Riebeeck van Niekerk',
-      role: 'Founder & Chief Architect',
-      bio: 'Riebeeck specializes in distributed systems, scalable architecture, and artificial intelligence. With a passion for building intelligent data solutions, he leads LatticeHouse in creating cutting-edge analytics platforms.',
-      location: 'Los Angeles, CA',
+      name: 'John Doe',
+      role: 'Founder & CEO',
+      bio: 'John is a seasoned entrepreneur with over 15 years of experience in technology and business development. He founded YourCompany with a vision to deliver innovative solutions that help businesses grow and succeed in the digital age.',
+      location: 'San Francisco, CA',
       social: {
-        linkedin: 'https://www.linkedin.com/in/riebeeckvanniekerk/',
-        github: 'https://github.com/Riebeeck',
-        twitter: 'https://x.com',
+        linkedin: 'https://linkedin.com/in/yourprofile',
+        github: 'https://github.com/yourprofile',
+        twitter: 'https://twitter.com/yourprofile',
       },
     },
   ];
@@ -30,46 +30,46 @@ export default function Company() {
   const principles = [
     {
       icon: '🎯',
-      title: 'Precision Engineering',
+      title: 'Quality First',
       description:
-        'We build robust, scalable systems with meticulous attention to detail. Every line of code is crafted for performance and maintainability.',
+        'We build robust, scalable solutions with meticulous attention to detail. Every project is crafted for performance and maintainability.',
     },
     {
       icon: '🚀',
-      title: 'Innovation First',
+      title: 'Innovation Driven',
       description:
-        'We stay at the cutting edge of AI and data technology, constantly exploring new methodologies to deliver transformative solutions.',
+        'We stay at the cutting edge of technology, constantly exploring new approaches to deliver transformative solutions.',
     },
     {
       icon: '🤝',
-      title: 'Collaborative Partnership',
+      title: 'Client Partnership',
       description:
-        'We work closely with our clients as true partners, ensuring transparent communication and shared success throughout every project.',
+        'We work closely with our clients as true partners, ensuring transparent communication and shared success throughout every engagement.',
     },
     {
       icon: '📊',
-      title: 'Data-Driven Impact',
+      title: 'Results Focused',
       description:
-        'We focus on measurable outcomes that drive real business value, turning complex data into actionable intelligence.',
+        'We focus on measurable outcomes that drive real business value, delivering solutions that make a tangible impact.',
     },
   ];
 
   const expertise = [
     {
-      area: 'Data Engineering',
-      description: 'Scalable pipelines, ETL/ELT processes, and real-time data orchestration',
+      area: 'Web Development',
+      description: 'Modern, responsive websites and web applications',
     },
     {
-      area: 'Machine Learning',
-      description: 'Model training, deployment, MLOps, and intelligent automation',
+      area: 'Mobile Apps',
+      description: 'Native and cross-platform mobile solutions',
     },
     {
-      area: 'Analytics & BI',
-      description: 'Business intelligence, reporting, and data visualization solutions',
+      area: 'Digital Strategy',
+      description: 'Consulting and planning for digital transformation',
     },
     {
-      area: 'Cloud Architecture',
-      description: 'AWS, Azure, GCP infrastructure and serverless solutions',
+      area: 'Cloud Solutions',
+      description: 'Scalable infrastructure and cloud-based services',
     },
   ];
 
@@ -88,9 +88,9 @@ export default function Company() {
             textShadow: '0 2px 4px rgba(0,0,0,0.3)',
           }}
         >
-          Building the Future of
+          Building Digital Solutions
           <br />
-          <span style={{ color: 'var(--theme-primary)' }}>Intelligent Data</span>
+          <span style={{ color: 'var(--theme-primary)' }}>That Matter</span>
         </h1>
         <p
           className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto"
@@ -99,8 +99,9 @@ export default function Company() {
             textShadow: '0 2px 4px rgba(0,0,0,0.3)',
           }}
         >
-          LatticeHouse is a data engineering and AI consultancy focused on building scalable,
-          intelligent solutions that transform how organizations leverage their data.
+          YourCompany is dedicated to building innovative solutions that help businesses
+          succeed in the digital age. We combine creativity with technical expertise to deliver
+          exceptional results.
         </p>
       </VideoHeroSection>
 
@@ -122,16 +123,16 @@ export default function Company() {
                 className="text-lg leading-relaxed mb-6"
                 style={{ color: 'var(--theme-text-secondary)' }}
               >
-                We empower organizations to harness the full potential of their data through
-                cutting-edge engineering and artificial intelligence. Our mission is to make
-                sophisticated data solutions accessible, scalable, and impactful.
+                We believe in creating solutions that make a real difference for our clients.
+                Our mission is to combine cutting-edge technology with thoughtful design to
+                deliver products and services that exceed expectations.
               </p>
               <p
                 className="text-lg leading-relaxed"
                 style={{ color: 'var(--theme-text-secondary)' }}
               >
-                From data pipelines to machine learning models, we build the infrastructure that
-                powers data-driven decision making at scale.
+                Whether you&apos;re a startup or an established enterprise, we&apos;re here to help you
+                navigate the digital landscape and achieve your business goals.
               </p>
             </div>
             <div
@@ -235,7 +236,7 @@ export default function Company() {
               className="text-lg max-w-2xl mx-auto"
               style={{ color: 'var(--theme-text-secondary)' }}
             >
-              The people building the future of intelligent data solutions.
+              The people behind our innovative solutions and exceptional service.
             </p>
           </div>
 
@@ -352,8 +353,8 @@ export default function Company() {
             className="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
             style={{ color: 'var(--theme-text-secondary)' }}
           >
-            Ready to transform your data infrastructure? We&apos;re here to help you build
-            scalable, intelligent solutions that drive real business impact.
+            Ready to take your business to the next level? We&apos;re here to help you build
+            innovative solutions that drive real results and exceed your expectations.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link

@@ -13,24 +13,24 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Studio - Modern Portfolio & Content Platform',
-    template: '%s | Studio',
+    default: 'YourCompany - Modern Business Template',
+    template: '%s | YourCompany',
   },
   description:
-    'A clean, minimalist platform for showcasing work, writing, and digital products. Built with Next.js, TypeScript, and Tailwind CSS.',
+    'A professional Next.js 15 starter template for building modern portfolios, blogs, and business websites. Built with TypeScript, Tailwind CSS, and MDX.',
   openGraph: {
-    title: 'Studio - Modern Portfolio & Content Platform',
+    title: 'YourCompany - Modern Business Template',
     description:
-      'A clean, minimalist platform for showcasing work, writing, and digital products.',
+      'A professional Next.js starter template for portfolios, blogs, and business websites.',
     type: 'website',
     locale: 'en_US',
-    siteName: 'Studio',
+    siteName: 'YourCompany',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Studio - Modern Portfolio & Content Platform',
+    title: 'YourCompany - Modern Business Template',
     description:
-      'A clean, minimalist platform for showcasing work, writing, and digital products.',
+      'A professional Next.js starter template for portfolios, blogs, and business websites.',
   },
 };
 

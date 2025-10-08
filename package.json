@@ -1,7 +1,29 @@
 {
-  "name": "core_web",
-  "version": "0.1.0",
-  "private": true,
+  "name": "nextjs-business-starter",
+  "version": "1.0.0",
+  "description": "A modern, production-ready Next.js 15 starter template for portfolios, blogs, and business websites with TypeScript, Tailwind CSS, and MDX support",
+  "keywords": [
+    "nextjs",
+    "nextjs15",
+    "typescript",
+    "tailwind",
+    "tailwindcss",
+    "mdx",
+    "blog",
+    "portfolio",
+    "business",
+    "starter",
+    "template",
+    "react",
+    "app-router"
+  ],
+  "author": "Your Name",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/nextjs-business-starter"
+  },
+  "license": "MIT",
+  "private": false,
   "engines": {
     "node": ">=18.17.0",
     "npm": ">=9.0.0"
